@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import Course from './Course.jsx';
+import PropTypes from 'prop-types';
 
-class Courses extends Component {
-  state = {
-    
-  }
+const Courses = ({ courses }) => (
+  <div>
+    {courses.map(course => (
+      <Course
+        name={course}
+        key={course}
+      />
+    ))}
+  </div>
+);
 
-  render = () => (
-    <div>
-      Courses
-    </div>
-  );
-}
+Courses.propTypes = {
+  courses: PropTypes.array.isRequired,
+};
 
 export default Courses;

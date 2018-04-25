@@ -3,16 +3,21 @@ import NavBar from './NavBar.jsx';
 import Routes from './Routes.jsx';
 
 class App extends Component {
-  
+
   state = {
-    user: ''
+    user: '',
+    categories: ['react', 'angular'],
+    courses: ['learn react the hard way', 'learn angular the hard way']
   }
 
   render = () =>  {
+    const { categories, courses, user } = this.state;
     return (
       <div id="content">
-        <NavBar />
-        <Routes />
+        <NavBar categories={categories} user={user} />
+        <div className="container">
+          <Routes courses={courses} />
+        </div>
       </div>
     );
   }
