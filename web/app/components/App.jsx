@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import NavBar from './NavBar.jsx';
+import Routes from './Routes.jsx';
 
-export default class App extends React.Component {
-  render() {
+class App extends Component {
+  
+  state = {
+    user: ''
+  }
+
+  render = () =>  {
     return (
       <div id="content">
-        <h5>Time to <a href="https://facebook.github.io/react/">React</a>.</h5>
-        Hello!
+        <NavBar />
+        <Routes />
       </div>
     );
   }
 }
+
+export default App;
