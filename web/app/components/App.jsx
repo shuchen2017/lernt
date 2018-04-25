@@ -5,6 +5,7 @@ export default class App extends React.Component {
     return (
       <div id="content">
         <h5>Time to <a href="https://facebook.github.io/react/">React</a>.</h5>
+        Hello!
       </div>
     );
   }

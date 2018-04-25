@@ -12,8 +12,8 @@ COPY package*.json ./
 # RUN npm install --only=production
 
 # Bundle app source
-COPY . .
-
+ADD . /app
+WORKDIR /app
 ENV PGHOST=db
 ENV PGUSER=postgres
 RUN npm install
