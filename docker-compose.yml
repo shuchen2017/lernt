@@ -11,6 +11,8 @@ services:
       - PORT=3333
     depends_on:
       - db
+    volumes:
+      - "./web:/app"
   db:
     restart: "always"
     build: "./db"
