@@ -7,7 +7,16 @@ class App extends Component {
   state = {
     user: '',
     categories: ['react', 'angular'],
-    courses: ['learn react the hard way', 'learn angular the hard way']
+    courses: [
+      {
+        name: 'learn react the hard way',
+        id: 1234
+      },
+      {
+        name: 'learn angular the hard way',
+        id: 12345
+      }
+    ]
   }
 
   render = () =>  {

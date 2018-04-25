@@ -6,8 +6,9 @@ const Courses = ({ courses }) => (
   <div>
     {courses.map(course => (
       <Course
-        name={course}
-        key={course}
+        name={course.name}
+        id={course.id}
+        key={course.id}
       />
     ))}
   </div>

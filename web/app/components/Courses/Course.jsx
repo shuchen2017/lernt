@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-const Course = ({ name }) => (
+const Course = ({ name, id }) => (
   <div className="card">
     <div className="card-body">
-      <h3 className="card-title">{name}</h3>
+      <h3 className="card-title">
+        <Link to={`/course/${id}`}>
+          {name}
+        </Link>
+      </h3>
       <span className="card-text float-right">
         Price: ${}
       </span>
@@ -19,6 +24,7 @@ const Course = ({ name }) => (
 
 Course.propTypes = {
   name: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 export default Course;
