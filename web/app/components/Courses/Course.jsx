@@ -19,8 +19,8 @@ const Course = ({ title, id, price, author, description, videoUrl, setActiveCour
       </h6>
       <p className="card-text text-secondary">{description}</p>
       <p className="card-subtitle small text-muted text-center">Click for more details</p>
-      <Upvote count={0} displayLoginWarning={false} handleUpvoteClick={() => console.log('upvote!')} />
     </div>
+    <Upvote count={0} displayLoginWarning={false} handleUpvoteClick={() => console.log('upvote!')} />
   </div>
 );
 
