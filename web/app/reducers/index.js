@@ -7,4 +7,4 @@ export default combineReducers({
   courses: coursesReducer,
   activeCourse: activeCourseReducer,
   user: userReducer,
-}); 
+});

@@ -47,8 +47,4 @@ const Routes = () => {
   );
 };
 
-Routes.propTypes = {
-  courses: PropTypes.array.isRequired,
-};
-
 export default Routes;

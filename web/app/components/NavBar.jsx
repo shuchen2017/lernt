@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class NavBar extends Component {
   state = {
@@ -39,7 +40,7 @@ class NavBar extends Component {
           Add Course
         </Link>
 
-        {this.props.user !== '' ? (
+        {this.props.user.username !== '' ? (
           <Fragment>
             <Link to="/profile" className="nav-item clickable">
               Profile
@@ -66,4 +67,6 @@ NavBar.propTypes = {
   user: PropTypes.string.isRequired,
 };
 
-export default NavBar;
+const mapStateToProps = state => ({ user: state.user });
+
+export default connect(mapStateToProps)(NavBar);

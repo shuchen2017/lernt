@@ -1,5 +1,6 @@
 import { SET_ACTIVE_COURSE } from '../components/Courses/actions';
-import initialState from './initialState';
+
+const initialState = {};
 
 const activeCourseReducer = (state = initialState, action) => {
   switch (action.type) {
