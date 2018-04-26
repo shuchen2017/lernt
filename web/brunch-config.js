@@ -15,5 +15,4 @@ exports.server = {
 
 exports.plugins = {
   babel: {presets: ['env', 'react', 'stage-2']},
-  autoReload: {host: '127.0.0.1'}
 };

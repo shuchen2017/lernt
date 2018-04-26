@@ -1,39 +1,47 @@
 import React, { Component, StrictMode } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const CourseDetail = ({name, id}) => (
+const CourseDetail = ({title, id, price, author, description, videoUrl, setActiveCourse}) => (
   <StrictMode>
     <div className="container">
-      <div>
-        <button
-          className="btn btn-primary btn-icon btn-icon-mini btn-round text-center float-left"
-        >
-          <i className="fas fa-arrow-left" />
-        </button>
-        <h1 className="text-primary text-center">{name}</h1>
-        <p className="text-secondary">
-          By {}
-        </p>
-        <p>Price: ${} </p>
+      <div className="card">
+        <div className="card-body">
+          <div className="card-title">
+            <button
+              className="btn btn-primary btn-icon btn-icon-mini btn-round text-center float-left"
+            >
+              <Link to="/courses/">
+                <i className="fas fa-arrow-left" style={{color: "white"}}/>
+              </Link>
+            </button>
+            <h1 className="text-primary text-center">{title}</h1>
+          </div>
+          <p className="card-text float-left text-secondary">
+            By: {author}
+          </p>
+          <p className="card-text float-right text-secondary">
+            Price: ${price}
+          </p>
+          <div className="embed-responsive embed-responsive-16by9">
+            <iframe
+              title={title}
+              className="embed-responsive-item"
+              allowFullScreen
+              src={videoUrl}
+            />
+          </div>
+          <a>
+            {}
+          </a>
+          <p className="card-text text-secondary">{description}</p>
+        </div>
       </div>
-      <div className="embed-responsive embed-responsive-16by9">
-        <iframe
-          title={name}
-          className="embed-responsive-item"
-          allowFullScreen
-        />
-      </div>
-      <a>
-        {}
-      </a>
-      <p>Description: {}</p>
     </div>
   </StrictMode>
 );
 
+const mapStateToProps = state => ({ ...state.activeCourse });
 
-CourseDetail.propTypes = {
-  name: PropTypes.string.isRequired,
-};
-
-export default CourseDetail;
+export default connect(mapStateToProps)(CourseDetail);
