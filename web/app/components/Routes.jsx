@@ -29,7 +29,7 @@ const decorateWithCourseFinder = (courses, components) =>
     const course = courses.reduce((foundCourse, currentCourse) => (
       +currentCourse.id === +match.params.id ? currentCourse : foundCourse
     ), { name: '', id: match.params.id });
-    return <Component name={course.name} id={course.id} />;
+    return <Component {...course} />;
   });
 
 const Routes = ({ courses }) => {

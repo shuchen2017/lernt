@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Dropdown,
-  DropdownMenu,
-  DropdownToggle,
-  DropdownItem,
-} from 'reactstrap';
+import LoginModal from './LoginModal.jsx';
 import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
@@ -17,7 +12,6 @@ class NavBar extends Component {
   toggleSignupModal = () => this.setState({ modalSelected: 'Sign Up' }, this.toggleModal);
 
   toggleLoginModal = () => this.setState({ modalSelected: 'Login' }, this.toggleModal);
-  
 
   toggleModal = () => this.setState(prevState => ({ modal: !prevState.modal }));
 
@@ -44,18 +38,19 @@ class NavBar extends Component {
         </div>
         {this.props.user !== '' ? (
           <div className="nav-item clickable">
-            <a className="nav-link">
+            <a className="nav-link" onClick={this.toggleModal}>
               Logout
             </a>
           </div>
         ) : (
           <div className="nav-item clickable">
-            <a className="nav-link">
+            <a className="nav-link" onClick={this.toggleModal}>
               Login
             </a>
           </div>
         )}
       </div>
+      {this.state.modal && <LoginModal />}
     </nav>
   );
 }
