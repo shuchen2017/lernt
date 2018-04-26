@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Course = ({ title, id, price, author, description, setActiveCourse }) => (
+const Course = ({ title, id, price, author, description, videoUrl, setActiveCourse }) => (
   <div className="card">
     <div className="card-body">
       <h3 className="card-title">
-        <Link to={`/course/${id}`} onClick={() => setActiveCourse({ title, id, price, author, description })} >
+        <Link to={`/course/${id}`} onClick={() => setActiveCourse({ title, id, price, author, description, videoUrl })} >
           {title}
         </Link>
       </h3>

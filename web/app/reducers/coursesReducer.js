@@ -6,6 +6,7 @@ const initialState = {
     price: 10,
     id: 1234,
     description: 'pretty neat! - cole',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
   },
   1223: {
     title: 'learn angular the hard way',
@@ -13,6 +14,7 @@ const initialState = {
     price: 10,
     id: 1223,
     description: 'angular is ass - definitely cole',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
   },
 };
 
