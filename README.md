@@ -12,3 +12,5 @@ Run `docker-compose up --build`
 `docker inspect {container id}` inspect a specific container for more info
 `docker exec -it {container name} /bin/bash` connect to a terminal in a container
 `docker system prune` clean up various docker junk
+
+If something doesn't work, run docker system prune!
