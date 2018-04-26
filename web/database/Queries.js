@@ -22,19 +22,20 @@ const ADD_USER = (userInfo) => {
 };
 
 // Add Course
-// Params: title. url, instructor, description, price, category, submitted_by
+// Params: title. url, instructor, description, price, category, submitted_by: userId
 const ADD_COURSE = (courseInfo) => {
-  const { url } = courseInfo;
+  const { url, submittedBy: submitted_by } = courseInfo;
 
-  Course.findOrCreate({
+  return Course.findOrCreate({
     where: { url },
-    defaults: courseInfo,
+    defaults: { ...courseInfo, submitted_by },
   }).then(([course, created]) => {
     if (created) {
       console.log(`${course.title} successfully added`);
-    } else {
-      console.log(`${course.url} in database`);
+      return course;
     }
+    console.log(`${course.url} in database`);
+    return undefined;
   });
 };
 
@@ -122,7 +123,7 @@ const DELETE_VOTE = (voteInfo) => {
   });
 };
 
-// const GET_COURSES = () => Course.find();
+const GET_COURSES = () => Course.findAll();
 
 module.exports = {
   ADD_USER,
@@ -130,4 +131,5 @@ module.exports = {
   CHANGE_COURSE_RANKING,
   ADD_VOTE,
   DELETE_VOTE,
+  GET_COURSES,
 };

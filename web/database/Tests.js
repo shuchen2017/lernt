@@ -25,6 +25,7 @@ const {
 //           description: 'You can learn things here',
 //           url: 'course.com',
 //           category: 'react',
+//           submittedBy: user.id
 //         }))
 //       .then((course) => {
 //         // Vote.sync({ force: true }).then(() =>
@@ -45,15 +46,17 @@ const {
 
 // ADD_USER(user);
 
-// const testCourse = {
-//   title: 'Testing 102',
-//   url: 'test2.com',
-//   instructor: '',
-//   description: 'this is a course also',
-//   price: 5.5,
-// };
+const testCourse = {
+  title: 'Testing 103',
+  url: 'test2.com',
+  instructor: '',
+  description: 'this is a course also',
+  price: 5.5,
+  category: 'redux',
+  submittedBy: 1,
+};
 
-// ADD_COURSE(testCourse);
+ADD_COURSE(testCourse);
 
 // Add vote
 // contains userId, courseId, voteType
