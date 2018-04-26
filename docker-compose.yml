@@ -6,6 +6,7 @@ services:
       - "3333:3333"
     expose: 
       - "3333"
+      - "9532"
     environment: 
       - PROD=false
       - PORT=3333
