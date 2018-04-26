@@ -9,7 +9,7 @@ const {
  *
  */
 
-// // // force: true will drop the table if it already exists
+// // force: true will drop the table if it already exists
 // User.sync({ force: true })
 //   .then(() =>
 //     User.create({
@@ -27,12 +27,12 @@ const {
 //           category: 'react',
 //         }))
 //       .then((course) => {
-//         Vote.sync({ force: true }).then(() =>
-//           Vote.create({
-//             user_id: user.id,
-//             course_id: course.id,
-//             vote_type: 'upvote',
-//           }));
+//         // Vote.sync({ force: true }).then(() =>
+//         //   Vote.create({
+//         //     user_id: user.id,
+//         //     course_id: course.id,
+//         //     vote_type: 'upVote',
+//         //   }));
 //       });
 //   });
 
@@ -60,12 +60,12 @@ const {
 
 // Test Vote
 // const testVote = {
-//   userId: 2,
+//   userId: 1,
 //   courseId: 1,
-//   voteType: 'downvote',
+//   voteType: 'upVote',
 // };
 
 // ADD_VOTE(testVote);
 
 // Test vote deletion
-// DELETE_VOTE({ userId: 2, courseId: 1 });
+// DELETE_VOTE({ userId: 1, courseId: 1, voteType: 'upVote' });
