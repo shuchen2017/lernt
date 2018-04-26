@@ -11,13 +11,15 @@ const sequelize = new Sequelize({
 });
 
 // Verify connection made
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
+const startSequelize = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connected to the database!');
+  } catch (err) {
+    console.error('Unable to connect to the database: ', err);
+  }
+};
+
+startSequelize();
 
 exports.sequelize = sequelize;
