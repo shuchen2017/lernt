@@ -13,12 +13,11 @@ const fetchCourses = courses => ({
   courses,
 });
 
-const fetchCoursesAsync = () => {
-  return async (dispatch) => {
-    const { data } = await axios.get('/api/courses');
-    dispatch(fetchCourses(data));
-  }
-}
+const fetchCoursesAsync = () => (async (dispatch) => {
+  const { data } = await axios.get('/api/courses');
+  console.log('Data retrieved: ', data);
+  dispatch(fetchCourses(data));
+});
 
 module.exports = {
   setActiveCourse,
