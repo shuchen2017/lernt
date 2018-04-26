@@ -16,6 +16,7 @@ ADD . /app
 WORKDIR /app
 ENV PGHOST=db
 ENV PGUSER=postgres
+ENV PGDATABASE=lernt
 RUN npm install
 RUN npm run build
 CMD ["npm", "start"]
