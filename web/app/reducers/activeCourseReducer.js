@@ -5,7 +5,7 @@ const initialState = {};
 const activeCourseReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ACTIVE_COURSE:
-      return Object.assign({}, state, { activeCourse: state.courses.id });
+      return Object.assign({}, state, { activeCourse: action.course });
     default:
       return state;
   }

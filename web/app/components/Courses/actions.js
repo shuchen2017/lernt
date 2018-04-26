@@ -1,8 +1,8 @@
 const SET_ACTIVE_COURSE = 'SET_ACTIVE_COURSE';
 
-const setActiveCourse = id => ({
+const setActiveCourse = course => ({
   type: SET_ACTIVE_COURSE,
-  id,
+  course,
 });
 
 module.exports = {

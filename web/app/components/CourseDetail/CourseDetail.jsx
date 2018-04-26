@@ -11,7 +11,7 @@ const CourseDetail = ({name, id, price, author, setActiveCourse}) => (
           className="btn btn-primary btn-icon btn-icon-mini btn-round text-center float-left"
         >
           <Link to="/">
-            <i className="fas fa-arrow-left" />
+            <i className="fas fa-arrow-left" style={{color: "white"}}/>
           </Link>
         </button>
         <h1 className="text-primary text-center">{name}</h1>
