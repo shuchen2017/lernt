@@ -13,9 +13,20 @@ const Course = db.define('course', {
   title: { type: Sequelize.STRING, allowNull: false },
   url: { type: Sequelize.STRING, allowNull: false, unique: true },
   instructor: { type: Sequelize.STRING, allowNull: true },
-  description: { type: Sequelize.STRING, allowNull: false },
+  description: { type: Sequelize.STRING, allowNull: true },
   price: { type: Sequelize.FLOAT, allowNull: true, defaultValue: 0 },
   category: { type: Sequelize.STRING, allowNull: false },
+  submitted_by: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE,
+    },
+    allowNull: false,
+  },
+  up_votes: { type: Sequelize.INTEGER, allowNull: true, defaultValue: 0 },
+  down_votes: { type: Sequelize.INTEGER, allowNull: true, defaultValue: 0 },
 });
 
 // Vote

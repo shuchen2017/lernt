@@ -22,26 +22,59 @@ const ADD_USER = (userInfo) => {
 };
 
 // Add Course
-// Params: title. url, instructor, description, price, category
+// Params: title. url, instructor, description, price, category, submitted_by: userId
 const ADD_COURSE = (courseInfo) => {
-  const { url } = courseInfo;
+  const { url, submittedBy: submitted_by } = courseInfo;
 
-  Course.findOrCreate({
+  return Course.findOrCreate({
     where: { url },
-    defaults: courseInfo,
+    defaults: { ...courseInfo, submitted_by },
   }).then(([course, created]) => {
     if (created) {
       console.log(`${course.title} successfully added`);
-    } else {
-      console.log(`${course.url} in database`);
+      return course;
+    }
+    console.log(`${course.url} in database`);
+    return undefined;
+  });
+};
+
+// Changes course up_votes or down_votes count when vote updated
+// takes a voteType and changeType, based on that adjusts the
+// up_votes and down_votes count of a course
+// Accepted changeTypes are 'update', 'create', 'delete'
+const CHANGE_COURSE_RANKING = ({ courseId, voteType, voteChangeType }) => {
+  const voteCategory = voteType === 'upVote' ? 'up_votes' : 'down_votes';
+
+  Course.findOne({ where: { id: courseId } }).then((course) => {
+    const oppositeCategory = voteCategory === 'up_votes' ? 'down_votes' : 'up_votes';
+
+    switch (voteChangeType) {
+      case 'update':
+        course.decrement({ [oppositeCategory]: 1 });
+        course.increment({ [voteCategory]: 1 });
+        break;
+      case 'create':
+        course.increment({ [voteCategory]: 1 });
+        break;
+      case 'delete':
+        course.decrement({ [voteCategory]: 1 });
+        break;
+      default:
+        break;
     }
   });
 };
 
 // Add or Update Votes
 // Params: userId, courseId, voteType
+// voteType must be 'upVote' or 'downVote'
 const ADD_VOTE = (voteInfo) => {
   const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
+
+  // Find previous upvotes / downvotes for a course
+  // if registering new vote, ++ or --
+  // if updating, -- opposite voteType, ++ new Vote type
 
   Vote.findOrCreate({
     where: {
@@ -54,13 +87,21 @@ const ADD_VOTE = (voteInfo) => {
     } else {
       vote.update({ vote_type }).then(updatedVote => console.log('updated!'));
     }
+
+    const voteChange = {
+      courseId: course_id,
+      voteType: vote_type,
+      voteChangeType: created ? 'create' : 'update',
+    };
+
+    CHANGE_COURSE_RANKING(voteChange);
   });
 };
 
 // Delete Vote
-// Params: userId, courseId
+// Params: userId, courseId, voteType - 'upVote' or 'downVote'
 const DELETE_VOTE = (voteInfo) => {
-  const { userId: user_id, courseId: course_id } = voteInfo;
+  const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
 
   Vote.destroy({
     where: {
@@ -70,7 +111,25 @@ const DELETE_VOTE = (voteInfo) => {
     if (affectedRows === 0) {
       console.log("couldn't find that vote");
     } else {
+      const voteChange = {
+        courseId: course_id,
+        voteType: vote_type,
+        voteChangeType: 'delete',
+      };
+
+      CHANGE_COURSE_RANKING(voteChange);
       console.log('rows deleted', affectedRows);
     }
   });
+};
+
+const GET_COURSES = () => Course.findAll();
+
+module.exports = {
+  ADD_USER,
+  ADD_COURSE,
+  CHANGE_COURSE_RANKING,
+  ADD_VOTE,
+  DELETE_VOTE,
+  GET_COURSES,
 };
