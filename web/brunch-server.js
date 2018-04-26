@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({
 app.get('/api/courses', (req, res) => {
   GET_COURSES()
     .then((courses) => {
-      const coursesById = courses.map(course => ({ [course.id]: course }));
+      const coursesById = {};
+      courses.forEach((course) => {
+        coursesById[course.id] = course;
+      });
       res.send(coursesById);
     })
     .catch(err => res.send('404'));

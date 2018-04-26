@@ -19,6 +19,7 @@ class Courses extends Component {
             <Course
               setActiveCourse={setActiveCourse}
               {...course}
+              course={course}
               key={course.id}
             />
           ))}

@@ -3,10 +3,13 @@ import axios from 'axios';
 const SET_ACTIVE_COURSE = 'SET_ACTIVE_COURSE';
 const FETCH_COURSES = 'FETCH_COURSES';
 
-const setActiveCourse = course => ({
+const setActiveCourse = course => {
+  console.log('Setting course!', course);
+  return {
   type: SET_ACTIVE_COURSE,
   course,
-});
+  }
+}
 
 const fetchCourses = courses => ({
   type: FETCH_COURSES,
