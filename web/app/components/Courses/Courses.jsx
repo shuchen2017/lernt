@@ -1,21 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component, StrictMode } from 'react';
 import Course from './Course.jsx';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setActiveCourse } from './actions';
 
-const Courses = ({ courses }) => (
-  <div>
-    {courses.map(course => (
-      <Course
-        name={course.name}
-        id={course.id}
-        key={course.id}
-      />
-    ))}
-  </div>
+const Courses = ({ courses, setActiveCourse }) => (
+  <StrictMode>
+    <div className="container">
+      {Object.values(courses).map(course => (
+        <Course
+          setActiveCourse={setActiveCourse}
+          {...course}
+          key={course.id}
+        />
+      ))}
+    </div>
+  </StrictMode>
 );
 
 Courses.propTypes = {
-  courses: PropTypes.array.isRequired,
+  courses: PropTypes.object.isRequired,
 };
 
-export default Courses;
+const mapStateToProps = state => ({ courses: state.courses });
+
+const mapDispatchToProps = dispatch => ({ setActiveCourse: course => dispatch(setActiveCourse(course)) });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Courses);

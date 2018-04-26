@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class NavBar extends Component {
   state = {
@@ -35,12 +36,21 @@ class NavBar extends Component {
             <span className="navbar-toggler-bar bar3" />
           </button>
         </div>
-        {this.props.user !== '' ? (
-          <div className="nav-item clickable">
-            <a className="nav-link" onClick={this.toggleModal}>
-              Logout
-            </a>
-          </div>
+        <Link to="/courses/add" className="nav-item clickable">
+          Add Course
+        </Link>
+
+        {this.props.user.username !== '' ? (
+          <Fragment>
+            <Link to="/profile" className="nav-item clickable">
+              Profile
+            </Link>
+            <div className="nav-item clickable">
+              <a className="nav-link" onClick={this.toggleModal}>
+                Logout
+              </a>
+            </div>
+          </Fragment>
         ) : (
           <div className="nav-item clickable">
             <a className="nav-link" onClick={this.toggleModal}>
@@ -54,7 +64,9 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-  user: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-export default NavBar;
+const mapStateToProps = state => ({ user: state.user });
+
+export default connect(mapStateToProps)(NavBar);
