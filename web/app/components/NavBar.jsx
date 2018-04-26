@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import LoginModal from './LoginModal.jsx';
 import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
   state = {
     modalSelected: 'Login',
     modal: false,
-  }  
+  };
 
   toggleSignupModal = () => this.setState({ modalSelected: 'Sign Up' }, this.toggleModal);
 
@@ -50,7 +49,6 @@ class NavBar extends Component {
           </div>
         )}
       </div>
-      {this.state.modal && <LoginModal />}
     </nav>
   );
 }

@@ -1,7 +1,9 @@
 const express = require('express');
-const app = express();
 
-app.use(express.static(__dirname + '/public'));
+const app = express();
+const { sequelize: db } = require('./database/index');
+
+app.use(express.static(`${__dirname}/public`));
 
 // AJAX to /action.
 app.post('/action', (req, res, next) => {
@@ -11,7 +13,7 @@ app.post('/action', (req, res, next) => {
 // Export the module like this for Brunch.
 module.exports = (config, callback) => {
   // Server config is passed within the `config` variable.
-  app.listen(config.port, function () {
+  app.listen(config.port, () => {
     console.log(`Example app listening on port ${config.port}!`);
     callback();
   });
