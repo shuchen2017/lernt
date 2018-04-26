@@ -11,7 +11,7 @@ class AddCourse extends Component {
         <div className="container">
           <div className="card">
             <div className="card-title">
-              <h1 className="text-primary text-center">ADD A COURSE</h1>
+              <h3 className="text-primary text-center">ADD A COURSE</h3>
             </div>
             <div className="card-body">
               <form>

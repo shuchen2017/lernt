@@ -6,7 +6,7 @@ const Course = ({ title, id, price, author, description, videoUrl, setActiveCour
   <div className="card">
     <div className="card-body">
       <h3 className="card-title">
-        <Link to={`/course/${id}`} onClick={() => setActiveCourse({ title, id, price, author, description, videoUrl })} >
+        <Link to={`/courses/${id}`} onClick={() => setActiveCourse({ title, id, price, author, description, videoUrl })} >
           {title}
         </Link>
       </h3>

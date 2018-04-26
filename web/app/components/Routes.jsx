@@ -5,6 +5,7 @@ import Courses from './Courses/Courses.jsx';
 import CourseDetail from './CourseDetail/CourseDetail.jsx';
 import AddCourse from './AddCourse/AddCourse.jsx';
 import Profile from './Profile/Profile.jsx';
+import Landing from './Landing/Landing';
 
 /**
  *
@@ -37,11 +38,14 @@ import Profile from './Profile/Profile.jsx';
 const Routes = () => {
   // const [CoursesWrapped] = decorateWithCourses(courses, [Courses]);
   // const [CourseDetailWrapped] = decorateWithCourseFinder(courses, [CourseDetail]);
+  // NOTE: TO USE COMPONENT IN ROUTES, THE COMPONENT MUST BE A CLASS COMPONENT
+  // OTHERWISE, USE RENDER
   return (
     <Switch>
-      <Route exact path="/" component={Courses} />
-      <Route path="/course/:id" component={CourseDetail} />
+      <Route exact path="/" component={Landing} />
+      <Route exact path="/courses" component={Courses} />
       <Route exact path="/courses/add" component={AddCourse} />
+      <Route path="/courses/:id" component={CourseDetail} />
       <Route path="/profile/:username" component={Profile} />
     </Switch>
   );

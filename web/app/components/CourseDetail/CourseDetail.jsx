@@ -12,7 +12,7 @@ const CourseDetail = ({title, id, price, author, description, videoUrl, setActiv
             <button
               className="btn btn-primary btn-icon btn-icon-mini btn-round text-center float-left"
             >
-              <Link to="/">
+              <Link to="/courses/">
                 <i className="fas fa-arrow-left" style={{color: "white"}}/>
               </Link>
             </button>

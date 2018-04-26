@@ -20,9 +20,9 @@ class NavBar extends Component {
     <nav className="navbar navbar-expand-md bg-info">
       <div className="container">
         <div className="navbar-translate">
-          <a className="navbar-brand" href="/">
+          <Link to="/" className="navbar-brand">
             Home
-          </a>
+          </Link>
           <button
             className="navbar-toggler navbar-toggler-right"
             type="button"
@@ -39,6 +39,11 @@ class NavBar extends Component {
         </div>
         <div className="collapse navbar-collapse navbar-nav ml-auto">
           <div className="nav-item clickable">
+            <Link to="/courses/" className="nav-link">
+              Courses
+            </Link>
+          </div>
+          <div className="nav-item clickable">
             <Link to="/courses/add" className="nav-link">
               Add Course
             </Link>
@@ -46,7 +51,7 @@ class NavBar extends Component {
           {this.props.user.username !== '' ? (
             <Fragment>
               <div className="nav-item clickable">
-                <Link to="/profile" className="nav-link">
+                <Link to={`/profile/${this.props.user.username}`} className="nav-link">
                   Profile
                 </Link>
               </div>
