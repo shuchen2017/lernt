@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { GET_COURSES, ADD_COURSE } = require('./database/Queries');
+const LOAD_SAMPLE_DATA = require('./database/Tests');
 
 const app = express();
 const { sequelize: db } = require('./database/index');
