@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 
 const Profile = () => (
-  <div>
-    Profile
-  </div>
+  <StrictMode>
+    <div className="container">
+      Profile
+    </div>
+  </StrictMode>
 );
 
 export default Profile;
