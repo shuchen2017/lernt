@@ -31,7 +31,6 @@ const CourseDetail = ({name, id}) => (
   </StrictMode>
 );
 
-
 CourseDetail.propTypes = {
   name: PropTypes.string.isRequired,
 };

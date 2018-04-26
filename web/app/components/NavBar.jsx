@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -35,12 +35,21 @@ class NavBar extends Component {
             <span className="navbar-toggler-bar bar3" />
           </button>
         </div>
+        <Link to="/courses/add" className="nav-item clickable">
+          Add Course
+        </Link>
+
         {this.props.user !== '' ? (
-          <div className="nav-item clickable">
-            <a className="nav-link" onClick={this.toggleModal}>
-              Logout
-            </a>
-          </div>
+          <Fragment>
+            <Link to="/profile" className="nav-item clickable">
+              Profile
+            </Link>
+            <div className="nav-item clickable">
+              <a className="nav-link" onClick={this.toggleModal}>
+                Logout
+              </a>
+            </div>
+          </Fragment>
         ) : (
           <div className="nav-item clickable">
             <a className="nav-link" onClick={this.toggleModal}>

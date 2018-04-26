@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Courses from './Courses/Courses.jsx';
 import CourseDetail from './CourseDetail/CourseDetail.jsx';
+import AddCourse from './AddCourse/AddCourse.jsx';
+import Profile from './Profile/Profile.jsx';
 
 /**
  *
@@ -39,6 +41,8 @@ const Routes = ({ courses }) => {
     <Switch>
       <Route exact path="/" render={CoursesWrapped} />
       <Route path="/course/:id" render={CourseDetailWrapped} />
+      <Route exact path="/courses/add" component={AddCourse} />
+      <Route path="/profile/:username" component={Profile} />
     </Switch>
   );
 };
