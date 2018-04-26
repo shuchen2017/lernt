@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { Component, StrictMode } from 'react';
+import { connect } from 'react-redux';
 
-const Profile = () => (
-  <div>
-    Profile
-  </div>
-);
+class Profile extends Component {
+  state = {
 
-export default Profile;
+  }
+
+  render = () => (
+    <StrictMode>
+      <div className="container">
+        <div className="card">
+          <div className="card-title">
+            <h3 className="text-primary text-center">{this.props.username}</h3>
+          </div>
+        </div>
+      </div>
+    </StrictMode>
+  )
+}
+
+const mapStateToProps = state => ({ ...state.user });
+
+export default connect(mapStateToProps)(Profile);

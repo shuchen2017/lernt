@@ -9,25 +9,36 @@ class AddCourse extends Component {
     return (
       <StrictMode>
         <div className="container">
-          <h1 className="text-primary text-center">ADD A COURSE</h1>
-          <form>
-            <div className="form-group">
-              <label htmlFor="title">
-                TITLE
-              </label>
-              <input type="text" className="form-control" id="title" />
+          <div className="card">
+            <div className="card-title">
+              <h3 className="text-primary text-center">ADD A COURSE</h3>
             </div>
-            <br />
-            <label htmlFor="author" className="mr-1">
-              AUTHOR
-            </label>
-            <input type="text" id="author" />
-            <br />
-            <label htmlFor="title" className="mr-1">
-              PRICE
-            </label>
-            <input type="text" id="price" />
-          </form>
+            <div className="card-body">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="title">
+                    TITLE
+                  </label>
+                  <input type="text" className="form-control" id="title" />
+                  <br />
+                  <label htmlFor="author">
+                    AUTHOR
+                  </label>
+                  <input type="text" id="author" className="form-control" />
+                  <br />
+                  <label htmlFor="title">
+                    PRICE
+                  </label>
+                  <input type="text" id="price" className="form-control" />
+                  <br />
+                  <label htmlFor="description">
+                    DESCTIPTION
+                  </label>
+                  <input type="text" id="description" className="form-control" />
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </StrictMode>
     );
