@@ -2,7 +2,7 @@ import React, { Component, StrictMode } from 'react';
 import Course from './Course.jsx';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setActiveCourse } from './actions';
+import { setActiveCourse, fetchCoursesAsync } from './actions';
 
 const Courses = ({ courses, setActiveCourse }) => (
   <StrictMode>
@@ -24,6 +24,9 @@ Courses.propTypes = {
 
 const mapStateToProps = state => ({ courses: state.courses });
 
-const mapDispatchToProps = dispatch => ({ setActiveCourse: course => dispatch(setActiveCourse(course)) });
+const mapDispatchToProps = dispatch => ({
+  setActiveCourse: course => dispatch(setActiveCourse(course)),
+  fetchCoursesAsync: () => dispatch(fetchCoursesAsync()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Courses);
