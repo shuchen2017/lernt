@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { Modal } from 'reactstrap';
+
 import LoginModal from './LoginModal.jsx';
 import SignupModal from './SignupModal.jsx';
-import { Modal } from 'reactstrap';
+import { loginAsync, signupAsync } from './actions';
+
 
 class UserModal extends Component {
   state = {
@@ -35,5 +38,10 @@ class UserModal extends Component {
     </Modal>
   );
 }
+
+const mapDispatchToProps = dispatch => ({
+  loginAsync: userInfo => dispatch(loginAsync(userInfo)),
+  signupAsync: userInfo => dispatch(signupAsync(userInfo)),
+});
 
 export default UserModal;
