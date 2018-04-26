@@ -3,16 +3,17 @@ exports.files = {
   javascripts: {
     joinTo: {
       'vendor.js': /^(?!app)/,
-      'app.js': /^app/
-    }
+      'app.js': /^app/,
+    },
   },
-  stylesheets: {joinTo: 'app.css'},
+  stylesheets: { joinTo: 'app.css' },
 };
 
 exports.server = {
-  hostname: '0.0.0.0'
-}
+  hostname: '0.0.0.0',
+  run: true,
+};
 
 exports.plugins = {
-  babel: {presets: ['env', 'react', 'stage-2']},
+  babel: { presets: ['env', 'react', 'stage-2'] },
 };

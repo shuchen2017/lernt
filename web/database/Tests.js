@@ -10,32 +10,70 @@ const {
  */
 
 // // force: true will drop the table if it already exists
-// User.sync({ force: true })
-//   .then(() =>
-//     User.create({
-//       username: 'mikeee',
-//       email: 'mike@m.com',
-//       password: '1234',
-//     }))
-//   .then((user) => {
-//     Course.sync({ force: true })
-//       .then(() =>
-//         Course.create({
-//           title: 'someCourse',
-//           description: 'You can learn things here',
-//           url: 'course.com',
-//           category: 'react',
-//           submittedBy: user.id
-//         }))
-//       .then((course) => {
-//         // Vote.sync({ force: true }).then(() =>
-//         //   Vote.create({
-//         //     user_id: user.id,
-//         //     course_id: course.id,
-//         //     vote_type: 'upVote',
-//         //   }));
-//       });
-//   });
+User.sync({ force: true })
+  .then(() =>
+    User.bulkCreate([
+      {
+        username: 'mikeee',
+        email: 'mike@m.com',
+        password: '1234',
+      },
+      {
+        username: 'sam',
+        email: 'sam@hotmail.com',
+        password: '1111',
+      },
+    ]))
+  .then((user) => {
+    Course.sync({ force: true })
+      .then(() =>
+        Course.bulkCreate([
+          {
+            title: 'someCourse',
+            description: 'You can learn things here',
+            url: 'course.com',
+            category: 'react',
+            submitted_by: 1,
+            up_votes: 1,
+          },
+          {
+            title: 'Redux!',
+            description: 'cool course',
+            url: 'redux.com',
+            category: 'redux',
+            submitted_by: 2,
+            down_votes: 1,
+          },
+          {
+            title: 'Baking',
+            description: 'Make cakes',
+            url: 'MaryPoppins.com',
+            category: 'cooking',
+            submitted_by: 2,
+            down_votes: 1,
+          },
+        ]))
+      .then((course) => {
+        Vote.sync({ force: true }).then(() =>
+          Vote.bulkCreate([
+            {
+              user_id: 2,
+              course_id: 1,
+              vote_type: 'upVote',
+            },
+            {
+              user_id: 1,
+              course_id: 2,
+              vote_type: 'downVote',
+            },
+            {
+              user_id: 1,
+              course_id: 3,
+              vote_type: 'downVote',
+            },
+          ]));
+      });
+  });
 
 // // Test user data
 // const username = 'M';

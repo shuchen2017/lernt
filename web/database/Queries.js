@@ -7,17 +7,17 @@ const { User, Course, Vote } = require('./Models');
 const ADD_USER = (userInfo) => {
   const { username, email } = userInfo;
 
-  User.findOrCreate({
+  return User.findOrCreate({
     where: {
       [Sequelize.Op.or]: [{ username }, { email }],
     },
     defaults: userInfo,
   }).then(([user, created]) => {
     if (created) {
-      console.log('new user created', user.username);
-    } else {
-      console.log(`${user.username} or ${user.email} are in use, try signing in`);
+      return user;
     }
+    console.log(`${user.username} or ${user.email} are in use, try signing in`);
+    return undefined;
   });
 };
 
