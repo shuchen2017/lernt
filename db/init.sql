@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS lernt;
+CREATE DATABASE lernt;
+\c lernt
