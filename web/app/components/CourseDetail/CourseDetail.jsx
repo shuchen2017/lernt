@@ -1,20 +1,24 @@
 import React, { Component, StrictMode } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const CourseDetail = ({name, id}) => (
+const CourseDetail = ({name, id, price, author, setActiveCourse}) => (
   <StrictMode>
     <div className="container">
       <div>
         <button
           className="btn btn-primary btn-icon btn-icon-mini btn-round text-center float-left"
         >
-          <i className="fas fa-arrow-left" />
+          <Link to="/">
+            <i className="fas fa-arrow-left" />
+          </Link>
         </button>
         <h1 className="text-primary text-center">{name}</h1>
         <p className="text-secondary">
-          By {}
+          By {author}
         </p>
-        <p>Price: ${} </p>
+        <p>Price: ${price} </p>
       </div>
       <div className="embed-responsive embed-responsive-16by9">
         <iframe
@@ -35,4 +39,6 @@ CourseDetail.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-export default CourseDetail;
+const mapStateToProps = state => ({ ...state.activeCourse });
+
+export default connect(mapStateToProps)(CourseDetail);
