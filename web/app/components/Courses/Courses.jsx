@@ -5,28 +5,23 @@ import { connect } from 'react-redux';
 import { setActiveCourse, fetchCoursesAsync } from './actions';
 
 class Courses extends Component {
-  constructor(props) {
-    super(props);
-    this.props.fetchCoursesAsync();
-  }
 
-  render = () => {
-    console.log(this.props.courses);
-    return (
-      <StrictMode>
-        <div className="container">
-          {Object.values(this.props.courses).map(course => (
-            <Course
-              setActiveCourse={setActiveCourse}
-              {...course}
-              course={course}
-              key={course.id}
-            />
-          ))}
-        </div>
-      </StrictMode>
-    );
-  }
+  componentDidMount = () => this.props.fetchCoursesAsync();
+
+  render = () => (
+    <StrictMode>
+      <div className="container">
+        {Object.values(this.props.courses).map(course => (
+          <Course
+            setActiveCourse={this.props.setActiveCourse}
+            {...course}
+            course={course}
+            key={course.id}
+          />
+        ))}
+      </div>
+    </StrictMode>
+  );
 }
 
 Courses.propTypes = {
