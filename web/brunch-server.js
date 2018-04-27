@@ -74,7 +74,7 @@ ROUTE LEGEND:
       - Returns all courses in object { id: { courseInfo } }
     - Add new course:
       - Route: POST api/courses
-      - Takes: { title, url, category, submitted_by, optional[ instructor, description, price, ]}
+      - Takes: { title, url, category, submitted_by: userId, optional[ instructor, description, price: float, ]}
       - Returns: If successful, course object, else 404
   VOTES:
     - Add Vote (also used to change from upvote to downvote)
