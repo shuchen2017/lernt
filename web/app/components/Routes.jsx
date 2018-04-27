@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Courses from './Courses/Courses.jsx';
@@ -6,6 +6,7 @@ import CourseDetail from './CourseDetail/CourseDetail.jsx';
 import AddCourse from './AddCourse/AddCourse.jsx';
 import Profile from './Profile/Profile.jsx';
 import Landing from './Landing/Landing';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 /**
  *
@@ -35,14 +36,32 @@ import Landing from './Landing/Landing';
 //     return <Component {...course} />;
 //   });
 
-const Routes = () => {
+const firstChild = (props) => {
+  const childrenArray = React.Children.toArray(props.children);
+  return childrenArray[0] || null;
+};
+
+class Routes extends Component {
   // const [CoursesWrapped] = decorateWithCourses(courses, [Courses]);
   // const [CourseDetailWrapped] = decorateWithCourseFinder(courses, [CourseDetail]);
   // NOTE: TO USE COMPONENT IN ROUTES, THE COMPONENT MUST BE A CLASS COMPONENT
   // OTHERWISE, USE RENDER
-  return (
+  state = {
+
+  };
+
+
+  render = () => (
     <Switch>
-      <Route exact path="/" component={Landing} />
+      <Route
+        exact
+        path="/"
+        children={({ match, ...rest }) => (
+          <TransitionGroup component={firstChild}>
+            {match && <Landing {...rest} />}
+          </TransitionGroup>
+        )} 
+      />
       <Route exact path="/courses" component={Courses} />
       <Route exact path="/courses/add" component={AddCourse} />
       <Route path="/courses/:id" component={CourseDetail} />

@@ -1,11 +1,23 @@
-import React, { StrictMode } from 'react';
+import React, { Component, StrictMode } from 'react';
+import AnimatedWrapper from '../AnimatedWrapper';
 
-const Landing = () => (
-  <StrictMode>
-    <div className="jumbotron">
-      <h1 className="display-4"> LERNT </h1>
-    </div>
-  </StrictMode>
-);
+class Landing extends Component {
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    console.log('yeet');
+    return {};
+  }
 
-export default Landing;
+  state = {
+
+  };
+
+  render = () => (
+    <StrictMode>
+      <div className="jumbotron">
+        <h1 className="display-4"> LERNT </h1>
+      </div>
+    </StrictMode>
+  );
+}
+
+export default AnimatedWrapper(Landing);
