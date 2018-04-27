@@ -1,4 +1,7 @@
 import React, { Component, StrictMode } from 'react';
+import { connect } from 'react-redux';
+
+import { addCourseAsync } from './actions';
 
 class AddCourse extends Component {
   state = {
@@ -45,4 +48,8 @@ class AddCourse extends Component {
   }
 }
 
-export default AddCourse;
+const mapDispatchToProps = course => ({
+  addCourseAsync: course => dispatch(addCourseAsync(course)),
+});
+
+export default connect(mapDispatchToProps)(AddCourse);
