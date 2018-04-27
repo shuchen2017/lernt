@@ -9,12 +9,18 @@ const promiseBcrypt = util.promisify(bcrypt.hash);
 // Retrieve user by username
 const FETCH_USER = async (username) => {
   try {
-    const user = await User.findOne({ where: { username } });
+    // Don't retrieve password
+    const { dataValues: user } = await User.findOne({
+      where: { username },
+      attributes: ['id', 'username', 'email', 'createdAt'],
+    });
     const userVotes = await Vote.findAll({ where: { user_id: user.id } });
-    console.log('user', user);
-    console.log('userVotes', userVotes);
-    const userWithVotes = Object.assign({ userVotes }, user);
-    console.log('user with votes', userWithVotes);
+
+    const userWithVotes = {
+      ...user,
+      userVotes,
+    };
+
     return userWithVotes;
   } catch (err) {
     return undefined;

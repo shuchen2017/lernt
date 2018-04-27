@@ -29,6 +29,7 @@ app.use(bodyParser.urlencoded({
 /*-------------------------------------------------------------------
           Authorization! :)
 -------------------------------------------------------------------*/
+
 // specifies cookie length and secret for creating cookies.
 // the secret should be in a git ignore file
 app.use(session({
@@ -88,25 +89,7 @@ ROUTE LEGEND:
   USER:
     - Route: GET /api/user/:username
     - Return { id, username, email, upVotes: [courseIds], downVotes: [courseIds] }
-
-  ------- FROM PREVIOUS GROUP (look at later) ----------
-  CATEGORY:
-    - GET '/api/categories': List of all categories.
-    - GET '/api/categories/:id': Detail view of category.
-    - POST '/api/categories': Add a new cateogry.
-  COURSE:
-    - GET '/api/categories/:id/courses': List of all courses for an individual category.
-    - GET '/api/categories/:id/courses/:courseId': Detailed information about a specific course.
-    - POST '/api/categories/:id/courses': Add a new course to a category.
-  USER:
-    - GET '/api/users': Returns a list of each user document.
-    - GET '/api/users/:id': Returns a specific user's information.
-    - POST '/api/users': Adds a new user to the database.
-  UPVOTE:
-    - POST '/api/upvote': Adds an upvote.
-    - DELETE '/api/upvote': Removes an upvote.
-    - PATCH '/api/upvotes': Retrieves upvotes. Send in the fields you want to filter by.
-    - PATCH '/api/upvote': Processes the upvote request.
+      - If fail, return 404
 */
 
 // SIGNUP
@@ -198,7 +181,27 @@ app.delete('/api/vote', isLoggedIn, (req, res) => {
 app.get('/api/user/:username', (req, res) => {
   const { username } = req.params;
 
-  FETCH_USER(username).then(user => res.send(user));
+  FETCH_USER(username)
+    .then((userUnformatted) => {
+      const user = {
+        ...userUnformatted,
+        upVotes: [],
+        downVotes: [],
+      };
+
+      delete user.userVotes;
+
+      userUnformatted.userVotes.forEach((vote) => {
+        if (vote.vote_type === 'upVote') {
+          user.upVotes.push(vote.course_id);
+        } else {
+          user.downVotes.push(vote.course_id);
+        }
+      });
+
+      res.status(201).send(user);
+    })
+    .catch(err => res.status(401).send('Could not find user'));
 });
 
 // AJAX to /action.
@@ -218,3 +221,24 @@ module.exports = (config, callback) => {
   // Brunch server is terminated
   return app;
 };
+
+/** ********* Previous group's routes - examine later:
+  ------- FROM PREVIOUS GROUP (look at later) ----------
+  CATEGORY:
+    - GET '/api/categories': List of all categories.
+    - GET '/api/categories/:id': Detail view of category.
+    - POST '/api/categories': Add a new cateogry.
+  COURSE:
+    - GET '/api/categories/:id/courses': List of all courses for an individual category.
+    - GET '/api/categories/:id/courses/:courseId': Detailed information about a specific course.
+    - POST '/api/categories/:id/courses': Add a new course to a category.
+  USER:
+    - GET '/api/users': Returns a list of each user document.
+    - GET '/api/users/:id': Returns a specific user's information.
+    - POST '/api/users': Adds a new user to the database.
+  UPVOTE:
+    - POST '/api/upvote': Adds an upvote.
+    - DELETE '/api/upvote': Removes an upvote.
+    - PATCH '/api/upvotes': Retrieves upvotes. Send in the fields you want to filter by.
+    - PATCH '/api/upvote': Processes the upvote request.
+*/
