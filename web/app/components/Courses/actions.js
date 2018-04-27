@@ -46,5 +46,7 @@ module.exports = {
   fetchCoursesAsync,
   FETCH_COURSES,
   upvoteAsync,
+  UPVOTE,
   downvoteAsync,
+  DOWNVOTE,
 };
