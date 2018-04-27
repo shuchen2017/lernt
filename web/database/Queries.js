@@ -1,11 +1,40 @@
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
+const util = require('util');
 const { sequelize: db } = require('./index');
 const { User, Course, Vote } = require('./Models');
+
+const promiseBcrypt = util.promisify(bcrypt.hash);
+
+// Retrieve user by username
+const FETCH_USER = async (username) => {
+  try {
+    // Don't retrieve password
+    const { dataValues: user } = await User.findOne({
+      where: { username },
+      attributes: ['id', 'username', 'email', 'createdAt'],
+    });
+    const userVotes = await Vote.findAll({ where: { user_id: user.id } });
+
+    const userWithVotes = {
+      ...user,
+      userVotes,
+    };
+
+    return userWithVotes;
+  } catch (err) {
+    return undefined;
+  }
+};
 
 // Add User to db
 // Params: username, email, password
 const ADD_USER = async (userInfo) => {
-  const { username, email } = userInfo;
+  const { username, email, password } = userInfo;
+  const saltRounds = 10;
+
+  const hash = await promiseBcrypt(password, saltRounds);
+  userInfo.password = hash;
 
   const [user, created] = await User.findOrCreate({
     where: {
@@ -59,63 +88,69 @@ const CHANGE_COURSE_RANKING = async ({ courseId, voteType, voteChangeType }) => 
 // Add or Update Votes
 // Params: userId, courseId, voteType
 // voteType must be 'upVote' or 'downVote'
+// TODO: Catch invalid ids
 const ADD_VOTE = async (voteInfo) => {
   const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
 
-  // Find previous upvotes / downvotes for a course
-  // if registering new vote, ++ or --
-  // if updating, -- opposite voteType, ++ new Vote type
+  try {
+    // Finds or creates vote
+    let [vote, created] = await Vote.findOrCreate({
+      where: {
+        [Sequelize.Op.and]: [{ user_id }, { course_id }],
+      },
+      defaults: { user_id, course_id, vote_type },
+    });
 
-  const [vote, created] = await Vote.findOrCreate({
-    where: {
-      [Sequelize.Op.and]: [{ user_id }, { course_id }],
-    },
-    defaults: { user_id, course_id, vote_type },
-  });
-  if (created) {
-    console.log(`${vote.vote_type} successfully added`);
-  } else {
-    await vote.update({ vote_type });
-    console.log('updated!');
-  }
+    // If vote was in db, then updates it
+    if (!created) {
+      vote = await vote.update({ vote_type });
+    }
 
-  const voteChange = {
-    courseId: course_id,
-    voteType: vote_type,
-    voteChangeType: created ? 'create' : 'update',
-  };
-
-  CHANGE_COURSE_RANKING(voteChange);
-
-};
-
-// Delete Vote
-// Params: userId, courseId, voteType - 'upVote' or 'downVote'
-const DELETE_VOTE = async (voteInfo) => {
-  const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
-
-  const affectedRows = await Vote.destroy({
-    where: {
-      [Sequelize.Op.and]: [{ user_id }, { course_id }],
-    },
-  })
-  if (affectedRows === 0) {
-    console.log("couldn't find that vote");
-  } else {
+    // Updates upVotes and downVotes for course
     const voteChange = {
       courseId: course_id,
       voteType: vote_type,
-      voteChangeType: 'delete',
+      voteChangeType: created ? 'create' : 'update',
     };
 
     CHANGE_COURSE_RANKING(voteChange);
-    console.log('rows deleted', affectedRows);
+
+    return vote;
+  } catch (err) {
+    console.log('Invalid userId or courseId or voteType!');
+    return undefined;
   }
+};
+
+// Delete Vote
+const DELETE_VOTE = (voteInfo) => {
+  const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
+
+  return Vote.destroy({
+    where: {
+      [Sequelize.Op.and]: [{ user_id }, { course_id }, { vote_type }],
+    },
+  })
+    .then((affectedRows) => {
+      if (affectedRows === 0) {
+        return undefined;
+      }
+      const voteChange = {
+        courseId: course_id,
+        voteType: vote_type,
+        voteChangeType: 'delete',
+      };
+
+      CHANGE_COURSE_RANKING(voteChange);
+      return affectedRows;
+    })
+    .catch(err => undefined);
 };
 
 const GET_COURSES = () => Course.findAll();
 
 module.exports = {
+  FETCH_USER,
   ADD_USER,
   ADD_COURSE,
   CHANGE_COURSE_RANKING,
