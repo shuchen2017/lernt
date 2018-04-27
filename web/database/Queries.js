@@ -1,11 +1,22 @@
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
+const util = require('util');
 const { sequelize: db } = require('./index');
 const { User, Course, Vote } = require('./Models');
 
+const promiseBcrypt = util.promisify(bcrypt.hash);
+
+// Retrieve user by username
+const FETCH_USER = username => User.findOne({ where: { username } }).then(user => user);
+
 // Add User to db
 // Params: username, email, password
-const ADD_USER = (userInfo) => {
-  const { username, email } = userInfo;
+const ADD_USER = async (userInfo) => {
+  const { username, email, password } = userInfo;
+  const saltRounds = 10;
+
+  const hash = await promiseBcrypt(password, saltRounds);
+  userInfo.password = hash;
 
   return User.findOrCreate({
     where: {
@@ -126,6 +137,7 @@ const DELETE_VOTE = (voteInfo) => {
 const GET_COURSES = () => Course.findAll();
 
 module.exports = {
+  FETCH_USER,
   ADD_USER,
   ADD_COURSE,
   CHANGE_COURSE_RANKING,
