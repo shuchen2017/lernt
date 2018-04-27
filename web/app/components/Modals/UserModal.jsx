@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import LoginModal from './LoginModal.jsx';
 import SignupModal from './SignupModal.jsx';
-import { loginAsync, signupAsync } from './actions';
+import { loginAsync, signupAsync } from '../../actions/user';
 
 
 class UserModal extends Component {
