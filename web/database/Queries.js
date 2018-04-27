@@ -7,7 +7,19 @@ const { User, Course, Vote } = require('./Models');
 const promiseBcrypt = util.promisify(bcrypt.hash);
 
 // Retrieve user by username
-const FETCH_USER = username => User.findOne({ where: { username } }).then(user => user);
+const FETCH_USER = async (username) => {
+  try {
+    const user = await User.findOne({ where: { username } });
+    const userVotes = await Vote.findAll({ where: { user_id: user.id } });
+    console.log('user', user);
+    console.log('userVotes', userVotes);
+    const userWithVotes = Object.assign({ userVotes }, user);
+    console.log('user with votes', userWithVotes);
+    return userWithVotes;
+  } catch (err) {
+    return undefined;
+  }
+};
 
 // Add User to db
 // Params: username, email, password
@@ -80,25 +92,25 @@ const CHANGE_COURSE_RANKING = ({ courseId, voteType, voteChangeType }) => {
 // Add or Update Votes
 // Params: userId, courseId, voteType
 // voteType must be 'upVote' or 'downVote'
-const ADD_VOTE = (voteInfo) => {
+// TODO: Catch invalid ids
+const ADD_VOTE = async (voteInfo) => {
   const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
 
-  // Find previous upvotes / downvotes for a course
-  // if registering new vote, ++ or --
-  // if updating, -- opposite voteType, ++ new Vote type
+  try {
+    // Finds or creates vote
+    let [vote, created] = await Vote.findOrCreate({
+      where: {
+        [Sequelize.Op.and]: [{ user_id }, { course_id }],
+      },
+      defaults: { user_id, course_id, vote_type },
+    });
 
-  Vote.findOrCreate({
-    where: {
-      [Sequelize.Op.and]: [{ user_id }, { course_id }],
-    },
-    defaults: { user_id, course_id, vote_type },
-  }).then(([vote, created]) => {
-    if (created) {
-      console.log(`${vote.vote_type} successfully added`);
-    } else {
-      vote.update({ vote_type }).then(updatedVote => console.log('updated!'));
+    // If vote was in db, then updates it
+    if (!created) {
+      vote = await vote.update({ vote_type });
     }
 
+    // Updates upVotes and downVotes for course
     const voteChange = {
       courseId: course_id,
       voteType: vote_type,
@@ -106,22 +118,27 @@ const ADD_VOTE = (voteInfo) => {
     };
 
     CHANGE_COURSE_RANKING(voteChange);
-  });
+
+    return vote;
+  } catch (err) {
+    console.log('Invalid userId or courseId or voteType!');
+    return undefined;
+  }
 };
 
 // Delete Vote
-// Params: userId, courseId, voteType - 'upVote' or 'downVote'
 const DELETE_VOTE = (voteInfo) => {
   const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
 
-  Vote.destroy({
+  return Vote.destroy({
     where: {
-      [Sequelize.Op.and]: [{ user_id }, { course_id }],
+      [Sequelize.Op.and]: [{ user_id }, { course_id }, { vote_type }],
     },
-  }).then((affectedRows) => {
-    if (affectedRows === 0) {
-      console.log("couldn't find that vote");
-    } else {
+  })
+    .then((affectedRows) => {
+      if (affectedRows === 0) {
+        return undefined;
+      }
       const voteChange = {
         courseId: course_id,
         voteType: vote_type,
@@ -129,9 +146,9 @@ const DELETE_VOTE = (voteInfo) => {
       };
 
       CHANGE_COURSE_RANKING(voteChange);
-      console.log('rows deleted', affectedRows);
-    }
-  });
+      return affectedRows;
+    })
+    .catch(err => undefined);
 };
 
 const GET_COURSES = () => Course.findAll();

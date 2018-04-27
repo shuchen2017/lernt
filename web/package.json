@@ -6,7 +6,7 @@
   "version": "0.0.1",
   "repository": "",
   "scripts": {
-    "start": "brunch watch --server",
+    "start": "set LOGGY_STACKS=1 && brunch watch --server",
     "build": "brunch build --production"
   },
   "dependencies": {

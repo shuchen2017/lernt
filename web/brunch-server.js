@@ -5,7 +5,14 @@ const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
 // Components
-const { GET_COURSES, ADD_COURSE, ADD_USER } = require('./database/Queries');
+const {
+  GET_COURSES,
+  ADD_COURSE,
+  ADD_USER,
+  ADD_VOTE,
+  DELETE_VOTE,
+  FETCH_USER,
+} = require('./database/Queries');
 const { sequelize: db } = require('./database/index');
 // Call component to load test data
 const LOAD_SAMPLE_DATA = require('./database/Tests');
@@ -43,9 +50,66 @@ const isLoggedIn = (req, res, next) => {
   res.status(401).end('You must log in to do that!');
 };
 
-// Signup new user
-// Takes { username, email, password }
-// If signup successful sends back user, else sends 404 with text
+/*
+ROUTE LEGEND:
+  STATIC:
+    - GET '/': Serves up static files and index.html.
+  SIGNUP / LOGIN / LOGOUT:
+    - Signup:
+      - Route: POST /api/signup
+      - Takes: { username, email, password }
+      - Returns: user Obj if successful, else 404
+    - Login:
+      - Route: POST api/login
+      - Takes: { username, password }
+      - Returns: If successful user obj and 201, else ?
+    - Logout:
+      - Route: POST api/logout
+      - Takes: ?
+      - Returns: Invalidates user cookie, redirects to /
+  COURSE:
+    - Get all courses:
+      - Route: GET /api/courses
+      - Returns all courses in object { id: { courseInfo } }
+    - Add new course:
+      - Route: POST api/courses
+      - Takes: { title, url, category, submitted_by, optional[ instructor, description, price, ]}
+      - Returns: If successful, course object, else 404
+  VOTES:
+    - Add Vote (also used to change from upvote to downvote)
+      - Route: POST /api/vote
+      - Takes: { userId, courseId, voteType }
+      - Returns: If successful vote object, else 404
+        - Warning: Returns vote object even if nothing updated! Should prevent duplicate votes on clientside
+    - Delete Vote
+      - Route: DELETE api/vote
+      - Takes: { userId, courseId, voteType: 'upVote' || 'downVote' }
+      - Returns: 201 if deleted, 401 if error
+  USER:
+    - Route: GET /api/user/:username
+    - Return { id, username, email, upVotes: [courseIds], downVotes: [courseIds] }
+
+  ------- FROM PREVIOUS GROUP (look at later) ----------
+  CATEGORY:
+    - GET '/api/categories': List of all categories.
+    - GET '/api/categories/:id': Detail view of category.
+    - POST '/api/categories': Add a new cateogry.
+  COURSE:
+    - GET '/api/categories/:id/courses': List of all courses for an individual category.
+    - GET '/api/categories/:id/courses/:courseId': Detailed information about a specific course.
+    - POST '/api/categories/:id/courses': Add a new course to a category.
+  USER:
+    - GET '/api/users': Returns a list of each user document.
+    - GET '/api/users/:id': Returns a specific user's information.
+    - POST '/api/users': Adds a new user to the database.
+  UPVOTE:
+    - POST '/api/upvote': Adds an upvote.
+    - DELETE '/api/upvote': Removes an upvote.
+    - PATCH '/api/upvotes': Retrieves upvotes. Send in the fields you want to filter by.
+    - PATCH '/api/upvote': Processes the upvote request.
+*/
+
+// SIGNUP
 app.post('/api/signup', (req, res) => {
   const userInfo = req.body;
 
@@ -66,14 +130,13 @@ app.post('/api/signup', (req, res) => {
     .catch(err => console.log('some error', err));
 });
 
-// Log In User
+// LOGIN
 app.post('/api/login', passport.authenticate('local-login'), (req, res) => {
   console.log(req.user.username, ' was successfully logged in');
   res.status(201).json(req.user);
 });
 
-// ends session disables cookie logs you out.
-// TODO: clear cookies?
+// LOGOUT
 app.post('/api/logout', isLoggedIn, (req, res) => {
   req.logout();
   console.log('Successfully logged out');
@@ -84,38 +147,7 @@ app.post('/api/logout', isLoggedIn, (req, res) => {
     .redirect('/');
 });
 
-/*-------------------------------------------------------------------
-          No Longer Authorization! :)
--------------------------------------------------------------------*/
-
-/*
-ROUTE LEGEND:
-  STATIC:
-    - GET '/': Serves up static files and index.html.
-  COURSE:
-    - GET '/api/courses': Returns object all courses { id: { courseInfo } }
-
-  ------- Check out later ----------
-  CATEGORY:
-    - GET '/api/categories': List of all categories.
-    - GET '/api/categories/:id': Detail view of category.
-    - POST '/api/categories': Add a new cateogry.
-  COURSE:
-    - GET '/api/categories/:id/courses': List of all courses for an individual category.
-    - GET '/api/categories/:id/courses/:courseId': Detailed information about a specific course.
-    - POST '/api/categories/:id/courses': Add a new course to a category.
-  USER:
-    - GET '/api/users': Returns a list of each user document.
-    - GET '/api/users/:id': Returns a specific user's information.
-    - POST '/api/users': Adds a new user to the database.
-  UPVOTE:
-    - POST '/api/upvote': Adds an upvote.
-    - DELETE '/api/upvote': Removes an upvote.
-    - PATCH '/api/upvotes': Retrieves upvotes. Send in the fields you want to filter by.
-    - PATCH '/api/upvote': Processes the upvote request.
-*/
-
-// GET ALL COURSES { id: { courseInfo}, id: ... }
+// GET ALL COURSES
 app.get('/api/courses', (req, res) => {
   GET_COURSES()
     .then((courses) => {
@@ -126,7 +158,6 @@ app.get('/api/courses', (req, res) => {
 });
 
 // ADD NEW COURSE
-// { title, url, category, submitted_by, optional[ instructor, description, price, ]}
 app.post('/api/courses', (req, res) => {
   const courseInfo = req.body;
 
@@ -135,6 +166,39 @@ app.post('/api/courses', (req, res) => {
     .then(course => res.send(course))
     // Make 404
     .catch(() => res.status(404).send('already in db!'));
+});
+
+// ADD OR MODIFY VOTE
+app.post('/api/vote', isLoggedIn, (req, res) => {
+  const voteInfo = req.body;
+
+  ADD_VOTE(voteInfo).then((vote) => {
+    if (vote) {
+      res.status(201).send(vote);
+    } else {
+      res.status(401).send('Vote failed');
+    }
+  });
+});
+
+// DELETE VOTE
+app.delete('/api/vote', isLoggedIn, (req, res) => {
+  const voteInfo = req.body;
+
+  DELETE_VOTE(voteInfo).then((deletedRows) => {
+    if (deletedRows) {
+      res.status(201).send(`${deletedRows} rows deleted!`);
+    } else {
+      res.status(401).send("Couldn't delete!");
+    }
+  });
+});
+
+// GET USER
+app.get('/api/user/:username', (req, res) => {
+  const { username } = req.params;
+
+  FETCH_USER(username).then(user => res.send(user));
 });
 
 // AJAX to /action.
