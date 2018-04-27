@@ -23,6 +23,7 @@ module.exports = function (passport) {
     'local-login',
     new LocalStrategy(async (username, password, cb) => {
       const userData = await FETCH_USER(username);
+      console.log(`userData: ${JSON.stringify(userData)}, username: ${username}, password: ${password}`);
       if (userData) {
         // unhashes stored password and compares to user input
         bcrypt.compare(password, userData.password, (err, res) => {

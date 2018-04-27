@@ -6,12 +6,14 @@ const { User, Course, Vote } = require('./Models');
 
 const promiseBcrypt = util.promisify(bcrypt.hash);
 
+const FETCH_USER = username => User.findOne({ where: { username } }).then(user => user);
+
 // Retrieve user by username
-const FETCH_USER = async (username) => {
+const FETCH_USER_WITH_VOTES = async (id) => {
   try {
     // Don't retrieve password
     const { dataValues: user } = await User.findOne({
-      where: { username },
+      where: { id },
       attributes: ['id', 'username', 'email', 'createdAt'],
     });
     const userVotes = await Vote.findAll({ where: { user_id: user.id } });
@@ -151,6 +153,7 @@ const GET_COURSES = () => Course.findAll();
 
 module.exports = {
   FETCH_USER,
+  FETCH_USER_WITH_VOTES,
   ADD_USER,
   ADD_COURSE,
   CHANGE_COURSE_RANKING,

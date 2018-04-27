@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { API_UDEMY_USERNAME, API_UDEMY_PASSWORD } from '../../../apiConfig';
+// import { API_UDEMY_USERNAME, API_UDEMY_PASSWORD } from '../../../apiConfig';
 
 const searchUdemy = async (searchTerm) => {
   const { data } = await axios.get('https://www.udemy.com/api-2.0/courses', {
     params: {
       search: searchTerm,
       category: 'Development',
-      'fields[course]': 'title,headline,image_480x270,price,avg_rating,created,url,visible_instructors',
+      'fields[course]':
+        'title,headline,image_480x270,price,avg_rating,created,url,visible_instructors',
       'fields[user]': 'title',
     },
     auth: {
@@ -24,7 +25,7 @@ const searchUdemy = async (searchTerm) => {
     rating: result.avg_rating,
     title,
   }));
-}
+};
 
 module.exports = {
   searchUdemy,

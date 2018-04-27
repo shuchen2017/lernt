@@ -11,7 +11,7 @@ const {
   ADD_USER,
   ADD_VOTE,
   DELETE_VOTE,
-  FETCH_USER,
+  FETCH_USER_WITH_VOTES,
 } = require('./database/Queries');
 const { sequelize: db } = require('./database/index');
 // Call component to load test data
@@ -103,6 +103,7 @@ app.post('/api/signup', (req, res) => {
           if (err) {
             res.status(404).send('Some unknown error logging in');
           } else {
+            // DONT SEND PASSWORD
             res.send(createdUser);
           }
         });
@@ -178,10 +179,10 @@ app.delete('/api/vote', isLoggedIn, (req, res) => {
 });
 
 // GET USER
-app.get('/api/user/:username', (req, res) => {
-  const { username } = req.params;
+app.get('/api/user/:id', (req, res) => {
+  const { id } = req.params;
 
-  FETCH_USER(username)
+  FETCH_USER_WITH_VOTES(id)
     .then((userUnformatted) => {
       const user = {
         ...userUnformatted,
