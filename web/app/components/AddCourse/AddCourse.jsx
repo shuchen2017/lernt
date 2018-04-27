@@ -48,6 +48,8 @@ class AddCourse extends Component {
   }
 }
 
-const mapDispatchToProps = course =>
+const mapDispatchToProps = course => ({
+  addCourseAsync: course => dispatch(addCourseAsync(course)),
+});
 
-export default AddCourse;
+export default connect(mapDispatchToProps)(AddCourse);
