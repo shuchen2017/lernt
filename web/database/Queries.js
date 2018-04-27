@@ -36,63 +36,53 @@ const ADD_USER = async (userInfo) => {
   const hash = await promiseBcrypt(password, saltRounds);
   userInfo.password = hash;
 
-  return User.findOrCreate({
+  const [user, created] = await User.findOrCreate({
     where: {
       [Sequelize.Op.or]: [{ username }, { email }],
     },
     defaults: userInfo,
-  }).then(([user, created]) => {
-    if (created) {
-      return user;
-    }
-    console.log(`${user.username} or ${user.email} are in use, try signing in`);
-    return undefined;
   });
+  return created ? user : undefined;
 };
 
 // Add Course
 // Params: title. url, instructor, description, price, category, submitted_by: userId
-const ADD_COURSE = (courseInfo) => {
+const ADD_COURSE = async (courseInfo) => {
   const { url, submittedBy: submitted_by } = courseInfo;
 
-  return Course.findOrCreate({
+  const [course, created] = await Course.findOrCreate({
     where: { url },
     defaults: { ...courseInfo, submitted_by },
-  }).then(([course, created]) => {
-    if (created) {
-      console.log(`${course.title} successfully added`);
-      return course;
-    }
-    console.log(`${course.url} in database`);
-    return undefined;
   });
+
+  return created ? course : undefined;
 };
 
 // Changes course up_votes or down_votes count when vote updated
 // takes a voteType and changeType, based on that adjusts the
 // up_votes and down_votes count of a course
 // Accepted changeTypes are 'update', 'create', 'delete'
-const CHANGE_COURSE_RANKING = ({ courseId, voteType, voteChangeType }) => {
+const CHANGE_COURSE_RANKING = async ({ courseId, voteType, voteChangeType }) => {
   const voteCategory = voteType === 'upVote' ? 'up_votes' : 'down_votes';
 
-  Course.findOne({ where: { id: courseId } }).then((course) => {
-    const oppositeCategory = voteCategory === 'up_votes' ? 'down_votes' : 'up_votes';
+  const course = await Course.findOne({ where: { id: courseId } });
 
-    switch (voteChangeType) {
-      case 'update':
-        course.decrement({ [oppositeCategory]: 1 });
-        course.increment({ [voteCategory]: 1 });
-        break;
-      case 'create':
-        course.increment({ [voteCategory]: 1 });
-        break;
-      case 'delete':
-        course.decrement({ [voteCategory]: 1 });
-        break;
-      default:
-        break;
-    }
-  });
+  const oppositeCategory = voteCategory === 'up_votes' ? 'down_votes' : 'up_votes';
+
+  switch (voteChangeType) {
+    case 'update':
+      course.decrement({ [oppositeCategory]: 1 });
+      course.increment({ [voteCategory]: 1 });
+      break;
+    case 'create':
+      course.increment({ [voteCategory]: 1 });
+      break;
+    case 'delete':
+      course.decrement({ [voteCategory]: 1 });
+      break;
+    default:
+      break;
+  }
 };
 
 // Add or Update Votes

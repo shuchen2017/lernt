@@ -1,8 +1,26 @@
 import React, { Component, StrictMode } from 'react';
+import { connect } from 'react-redux';
+
+import Course from './Course';
+import { searchUdemy } from './apiSearches';
+import { addCourseAsync } from './actions';
 
 class AddCourse extends Component {
   state = {
+    searchTerm: '',
+    searchResults: [],
+  }
 
+  handleSearchInputChange = (e, data) => {
+    this.setState({
+      searchTerm: e.target.value,
+    });
+  }
+
+  search = () => {
+    this.setState({
+      searchResults: searchUdemy(this.state.searchTerm),
+    });
   }
 
   render = () => {
@@ -14,35 +32,27 @@ class AddCourse extends Component {
               <h3 className="text-primary text-center">ADD A COURSE</h3>
             </div>
             <div className="card-body">
-              <form>
-                <div className="form-group">
-                  <label htmlFor="title">
-                    TITLE
-                  </label>
-                  <input type="text" className="form-control" id="title" />
-                  <br />
-                  <label htmlFor="author">
-                    AUTHOR
-                  </label>
-                  <input type="text" id="author" className="form-control" />
-                  <br />
-                  <label htmlFor="title">
-                    PRICE
-                  </label>
-                  <input type="text" id="price" className="form-control" />
-                  <br />
-                  <label htmlFor="description">
-                    DESCTIPTION
-                  </label>
-                  <input type="text" id="description" className="form-control" />
-                </div>
-              </form>
+              <div className="input-group">
+                <input type="text" className="form-control" value={this.state.searchTerm} onChange={this.handleSearchInputChange} placeholder="search courses..." />
+                <span className="input-group-btn">
+                  <button className="btn btn-default glyphicon glyphicon-search" type="button" onClick={this.search} />
+                </span>
+              </div>
             </div>
           </div>
+          {
+            this.state.searchResults.map(result => (
+              <Course addCourseAsync={addCourseAsync} {...result} />
+            ))
+          }
         </div>
       </StrictMode>
     );
   }
 }
 
-export default AddCourse;
+const mapDispatchToProps = dispatch => ({
+  addCourseAsync: course => dispatch(addCourseAsync(course)),
+});
+
+export default connect(mapDispatchToProps)(AddCourse);
