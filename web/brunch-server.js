@@ -37,9 +37,8 @@ app.post('/api/courses', (req, res) => {
     .catch(() => res.status(404).send('already in db!'));
 });
 
-// AJAX to /action.
-app.post('/action', (req, res, next) => {
-  res.send('POST action completed!');
+app.get('/*', (req, res) => {
+  res.sendFile(`${__dirname}/public/index.html`);
 });
 
 // Export the module like this for Brunch.
