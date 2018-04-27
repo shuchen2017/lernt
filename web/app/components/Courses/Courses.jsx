@@ -1,8 +1,9 @@
 import React, { Component, StrictMode } from 'react';
-import Course from './Course.jsx';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setActiveCourse, fetchCoursesAsync } from './actions';
+
+import { setActiveCourse, fetchCoursesAsync, upvoteAsync, downvoteAsync } from './actions';
+import Course from './Course.jsx';
 
 class Courses extends Component {
 
@@ -33,6 +34,8 @@ const mapStateToProps = state => ({ courses: state.courses });
 const mapDispatchToProps = dispatch => ({
   setActiveCourse: course => dispatch(setActiveCourse(course)),
   fetchCoursesAsync: () => dispatch(fetchCoursesAsync()),
+  upvoteAsync: upvoteInfo => dispatch(upvoteAsync(upvoteInfo)),
+  downvoteAsync: downVoteInfo => dispatch(downvoteAsync(downVoteInfo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Courses);

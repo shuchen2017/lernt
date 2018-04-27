@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import LoginModal from './LoginModal.jsx';
 import SignupModal from './SignupModal.jsx';
@@ -44,4 +45,4 @@ const mapDispatchToProps = dispatch => ({
   signupAsync: userInfo => dispatch(signupAsync(userInfo)),
 });
 
-export default UserModal;
+export default connect(mapDispatchToProps)(UserModal);
