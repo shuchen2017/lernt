@@ -1,11 +1,8 @@
 import React, { Component, StrictMode } from 'react';
 import AnimatedWrapper from '../AnimatedWrapper';
+import { getCategories } from '../../actions/categories';
 
 class Landing extends Component {
-  static getDerivedStateFromProps = (nextProps, prevState) => {
-    console.log('yeet');
-    return {};
-  }
 
   state = {
 
@@ -20,4 +17,4 @@ class Landing extends Component {
   );
 }
 
-export default AnimatedWrapper(Landing);
+export default Landing;

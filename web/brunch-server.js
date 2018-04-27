@@ -37,8 +37,23 @@ app.post('/api/courses', (req, res) => {
     .catch(() => res.status(404).send('already in db!'));
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(`${__dirname}/public/index.html`);
+// GET ALL CATEGORIES
+// Returns an array of all categories found.
+app.get('/api/categories', async (req, res) => {
+  try {
+    GET_COURSES()
+      .then((courses) => {
+        courses = courses.map(course => course.dataValues);
+        const categories = courses.reduce((found, { category }) => {
+          if (found.indexOf(category) === -1) found.push(category);
+          return found;
+        }, []);
+        res.send(categories);
+      });
+  } catch (err) {
+    res.status(500).send();
+  }
+  
 });
 
 // Export the module like this for Brunch.

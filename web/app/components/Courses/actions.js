@@ -4,6 +4,7 @@ const SET_ACTIVE_COURSE = 'SET_ACTIVE_COURSE';
 const FETCH_COURSES = 'FETCH_COURSES';
 const UPVOTE = 'UPVOTE';
 const DOWNVOTE = 'DOWNVOTE';
+const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
 
 const setActiveCourse = course => ({
   type: SET_ACTIVE_COURSE,
@@ -33,12 +34,15 @@ const downvoteAsync = course => ({
   // TODO: FILL IN
 });
 
-const fetchCoursesAsync = () => {
-  return async (dispatch) => {
-    const { data } = await axios.get('/api/courses');
-    dispatch(fetchCourses(data));
-  }
-}
+const filterByCategory = category => ({
+  type: FILTER_BY_CATEGORY,
+  category,
+});
+
+const fetchCoursesAsync = () => (async (dispatch) => {
+  const { data } = await axios.get('/api/courses');
+  dispatch(fetchCourses(data));
+});
 
 module.exports = {
   setActiveCourse,
@@ -49,4 +53,6 @@ module.exports = {
   UPVOTE,
   downvoteAsync,
   DOWNVOTE,
+  filterByCategory,
+  FILTER_BY_CATEGORY,
 };

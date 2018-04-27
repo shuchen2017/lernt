@@ -1,8 +1,8 @@
 import React, { Component, StrictMode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { setActiveCourse, fetchCoursesAsync, upvoteAsync, downvoteAsync } from './actions';
+import FilterBar from './FilterBar';
+import { setActiveCourse, fetchCoursesAsync, upvoteAsync, downvoteAsync, filterByCategory } from '../../actions/courses';
 import Course from './Course.jsx';
 
 class Courses extends Component {
@@ -11,6 +11,7 @@ class Courses extends Component {
 
   render = () => (
     <StrictMode>
+      <FilterBar filterByCategory={this.props.filterByCategory} />
       <div className="container">
         {Object.values(this.props.courses).map(course => (
           <Course
@@ -36,6 +37,7 @@ const mapDispatchToProps = dispatch => ({
   fetchCoursesAsync: () => dispatch(fetchCoursesAsync()),
   upvoteAsync: upvoteInfo => dispatch(upvoteAsync(upvoteInfo)),
   downvoteAsync: downVoteInfo => dispatch(downvoteAsync(downVoteInfo)),
+  filterByCategory: category => dispatch(filterByCategory(category)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Courses);
