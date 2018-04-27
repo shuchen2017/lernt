@@ -105,19 +105,28 @@ const ADD_VOTE = async (voteInfo) => {
 
     // If vote was in db, then updates it
     if (!created) {
+      const voteExists = await Vote.findOne({
+        where: {
+          [Sequelize.Op.and]: [{ user_id }, { course_id }, { vote_type }],
+        },
+      });
+
+      if (voteExists) {
+        return undefined;
+      }
       vote = await vote.update({ vote_type });
+      const voteChange = {
+        courseId: course_id,
+        voteType: vote_type,
+        voteChangeType: created ? 'create' : 'update',
+      };
+
+      CHANGE_COURSE_RANKING(voteChange);
+
+      return vote;
     }
 
     // Updates upVotes and downVotes for course
-    const voteChange = {
-      courseId: course_id,
-      voteType: vote_type,
-      voteChangeType: created ? 'create' : 'update',
-    };
-
-    CHANGE_COURSE_RANKING(voteChange);
-
-    return vote;
   } catch (err) {
     console.log('Invalid userId or courseId or voteType!');
     return undefined;
