@@ -47,7 +47,7 @@ class AddCourse extends Component {
           </div>
           {
             this.state.searchResults.map(result => (
-              <Course addCourseAsync={this.props.addCourseAsync} {...result} />
+              <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
             ))
           }
         </div>
@@ -55,8 +55,6 @@ class AddCourse extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({ ...state.user });
 
 const mapDispatchToProps = dispatch => ({
   addCourseAsync: course => dispatch(addCourseAsync(course)),

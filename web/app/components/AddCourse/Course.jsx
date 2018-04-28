@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Course =
-({ addCourseAsync, title, price, instructor, description, link, imageUrl, rating, createdAt }) => (
+({ addCourse, title, price, instructor, description, url, imageUrl, category, id }) => (
   <div className="card">
     <div className="card-body">
       <h3 className="card-title">{title}</h3>
@@ -20,16 +20,20 @@ const Course =
         <button
           className="btn btn-default"
           type="button"
-          onClick={() => addCourseAsync({
-            title,
-            price,
-            instructor,
-            description,
-            link,
-            imageUrl,
-            rating,
-            createdAt,
-          })}>
+          onClick={
+            () => {
+              const course = {
+                title,
+                price,
+                instructor,
+                description,
+                url,
+                imageUrl,
+                submittedBy: id,
+              };
+              addCourse(course);
+            }
+          }>
             Add this course
           </button>
       </span>
