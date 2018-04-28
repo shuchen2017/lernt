@@ -46,13 +46,13 @@ class NavBar extends Component {
                 Courses
               </Link>
             </div>
-            <div className="nav-item clickable">
-              <Link to="/courses/add" className="nav-link">
-                Add Course
-              </Link>
-            </div>
             {this.props.user.username !== '' ? (
               <Fragment>
+                <div className="nav-item clickable">
+                  <Link to="/courses/add" className="nav-link">
+                    Add Course
+                  </Link>
+                </div>
                 <div className="nav-item clickable">
                   <Link to={`/profile/${this.props.user.username}`} className="nav-link">
                     Profile
@@ -73,6 +73,8 @@ class NavBar extends Component {
             )}
             {
               this.state.modal
+              &&
+              this.props.user.username === ''
               &&
               <UserModal 
                 isOpen={this.state.modal}

@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, LOGOUT } from '../actions/user';
+import { AUTHENTICATED, LOGOUT } from '../actions/user';
 
 const initialState = {
   username: '',
@@ -6,8 +6,7 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SIGNUP:
-    case LOGIN:
+    case AUTHENTICATED:
       return action.user;
     case LOGOUT:
       return initialState;
