@@ -6,7 +6,8 @@ export const searchUdemy = async (searchTerm) => {
     params: {
       search: searchTerm,
       category: 'Development',
-      'fields[course]': 'title,headline,image_480x270,price,avg_rating,created,url,visible_instructors',
+      'fields[course]':
+        'title,headline,image_480x270,price,avg_rating,created,url,visible_instructors',
       'fields[user]': 'title',
     },
     auth: {

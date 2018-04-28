@@ -12,7 +12,7 @@ const SignupModal = ({
   secondPassword, 
   handleChangeSecondPassword,
   handleSignup,
-  swapState,
+  toggleModalType,
 }) => (
   <div>
     <ModalHeader toggle={toggleModal}>
@@ -31,7 +31,7 @@ const SignupModal = ({
             id="inputEmail"
             type="email"
             value={email}
-            onChange={handleChangeEmail}
+            onChange={e => handleChangeEmail(e)}
           />
         </div>
         <div className="form-group">
@@ -42,7 +42,7 @@ const SignupModal = ({
             id="inputPassword1"
             type="password"
             value={password}
-            onChange={handleChangePassword}
+            onChange={e => handleChangePassword(e)}
           />
         </div>
         <div className="form-group">
@@ -53,7 +53,7 @@ const SignupModal = ({
             id="inputPassword2"
             type="password"
             value={secondPassword}
-            onChange={handleChangeSecondPassword}
+            onChange={e => handleChangeSecondPassword(e)}
           />
         </div>
       </form>
@@ -62,10 +62,9 @@ const SignupModal = ({
       <Button color="primary" onClick={handleSignup} >
         Sign Up
       </Button>
-      <Button color="neutral" onClick={swapState} >
+      <Button color="neutral" onClick={toggleModalType} >
         Login instead
       </Button>
-
       <Button color="secondary" onClick={toggleModal} >
         Cancel
       </Button>
