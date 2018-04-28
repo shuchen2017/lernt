@@ -17,7 +17,7 @@ class NavBar extends Component {
   toggleModal = () => this.setState(prevState => ({ modal: !prevState.modal }));
 
   render = () => {
-    console.log(this.state)
+    console.log(this.state);
     return (
       <nav className="navbar navbar-expand-md bg-info">
         <div className="container">
@@ -70,20 +70,18 @@ class NavBar extends Component {
                 </a>
               </div>
             )}
-            {
-              this.state.modal
-              &&
-              <UserModal 
+            {this.state.modal && (
+              <UserModal
                 isOpen={this.state.modal}
                 toggle={this.toggleModal}
                 modalType={this.state.modalSelected}
               />
-            }
+            )}
           </div>
         </div>
       </nav>
     );
-  }
+  };
 }
 
 NavBar.propTypes = {
