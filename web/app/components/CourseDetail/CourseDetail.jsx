@@ -25,17 +25,24 @@ const CourseDetail = ({
                   <i className="fas fa-arrow-left" style={{ color: 'white' }} />
                 </Link>
               </button>
-              <h1 className="text-primary text-center">{title}</h1>
+              <a href={url} target="_blank">
+                <h1 className="text-primary text-center">{title}</h1>
+              </a>
             </div>
-            <div className="d-flex flex-row">
-              <p className="card-text float-left text-secondary">By: {instructor}</p>
-              <p className="card-text float-right text-secondary">Price: ${price}</p>
+            <div className="d-flex flex-row justify-content-between">
+              <div>
+                <p className="card-text float-left text-secondary">By: {instructor}</p>
+              </div>
+              <div>
+                <p className="card-text float-right text-secondary">Price: ${price}</p>
+              </div>
             </div>
-            <div className="row">
-              <img src={imageUrl} alt="learn somethin" />
+            <div className="row justify-content-center">
+              <a href={url} target="_blank">
+                <img src={imageUrl} alt="learn somethin" />
+              </a>
+              <p className="card-text text-secondary">{description}</p>
             </div>
-            <a>{}</a>
-            <p className="card-text text-secondary">{description}</p>
           </div>
         </div>
       </div>
