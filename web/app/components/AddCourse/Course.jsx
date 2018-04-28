@@ -29,7 +29,9 @@ const Course =
             imageUrl,
             rating,
             createdAt,
-          })}>Add this course</button>
+          })}>
+            Add this course
+          </button>
       </span>
     </p>
   </div>

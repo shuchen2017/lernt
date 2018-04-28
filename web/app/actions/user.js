@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const LOGIN = 'LOGIN';
-const SIGNUP = 'SIGNUP';
+export const LOGIN = 'LOGIN';
+export const SIGNUP = 'SIGNUP';
 
 const login = user => ({
   type: LOGIN,
@@ -13,23 +13,16 @@ const signup = user => ({
   user,
 });
 
-const loginAsync = (userInfo) => {
+export const loginAsync = (userInfo) => {
   return async (dispatch) => {
     const { data } = await axios.get('/api/login');
     dispatch(data);
   };
 };
 
-const signupAsync = (userInfo) => {
+export const signupAsync = (userInfo) => {
   return async (dispatch) => {
     const { data } = await axios.get('/api/signup');
     dispatch(data);
   };
-};
-
-module.exports = {
-  loginAsync,
-  LOGIN,
-  signupAsync,
-  SIGNUP,
 };

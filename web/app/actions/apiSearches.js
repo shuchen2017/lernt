@@ -1,7 +1,7 @@
 import axios from 'axios';
-// import { API_UDEMY_USERNAME, API_UDEMY_PASSWORD } from '../../../apiConfig';
+import { API_UDEMY_USERNAME, API_UDEMY_PASSWORD } from '../../apiConfig';
 
-const searchUdemy = async (searchTerm) => {
+export const searchUdemy = async (searchTerm) => {
   const { data } = await axios.get('https://www.udemy.com/api-2.0/courses', {
     params: {
       search: searchTerm,
@@ -25,8 +25,4 @@ const searchUdemy = async (searchTerm) => {
     rating: result.avg_rating,
     title,
   }));
-};
-
-module.exports = {
-  searchUdemy,
-};
+}

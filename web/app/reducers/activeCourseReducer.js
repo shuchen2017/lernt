@@ -1,4 +1,4 @@
-import { SET_ACTIVE_COURSE } from '../components/Courses/actions';
+import { SET_ACTIVE_COURSE } from '../actions/courses';
 
 const initialState = {};
 
