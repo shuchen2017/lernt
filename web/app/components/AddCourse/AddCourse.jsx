@@ -9,7 +9,6 @@ class AddCourse extends Component {
   state = {
     searchTerm: '',
     searchResults: [],
-    notLoggedInAlert: false
   }
 
   handleSearchInputChange = (e, data) => {
@@ -22,16 +21,6 @@ class AddCourse extends Component {
     this.setState({
       searchResults: searchUdemy(this.state.searchTerm),
     });
-  }
-
-  addCourse = (course) => {
-    if (!course.submittedBy) {
-      this.setState({
-        notLoggedInAlert: true,
-      });
-      return;
-    }
-    addCourseAsync(course);
   }
 
   render = () => {
@@ -58,7 +47,7 @@ class AddCourse extends Component {
           </div>
           {
             this.state.searchResults.map(result => (
-              <Course user={this.state.user} addCourse={this.props.addCourse} {...result} />
+              <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
             ))
           }
         </div>
@@ -66,8 +55,6 @@ class AddCourse extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({ ...state.user });
 
 const mapDispatchToProps = dispatch => ({
   addCourseAsync: course => dispatch(addCourseAsync(course)),

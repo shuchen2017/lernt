@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Course =
-({ addCourse, title, price, instructor, description, url, imageUrl, category, user }) => (
+({ addCourse, title, price, instructor, description, url, imageUrl, category, id }) => (
   <div className="card">
     <div className="card-body">
       <h3 className="card-title">{title}</h3>
@@ -29,7 +29,7 @@ const Course =
                 description,
                 url,
                 imageUrl,
-                submittedBy: user.id,
+                submittedBy: id,
               };
               addCourse(course);
             }
