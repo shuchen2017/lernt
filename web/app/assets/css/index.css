@@ -1,3 +1,13 @@
+html,
+body,
+#app {
+  height: 100vh;
+}
+
+#app {
+  background-image: '../../../bg_book.jpeg';
+}
+
 .clickable {
   cursor: pointer;
 }

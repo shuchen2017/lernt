@@ -29,19 +29,19 @@ const CourseDetail = ({
                 <h1 className="text-primary text-center">{title}</h1>
               </a>
             </div>
-            <div className="d-flex flex-row justify-content-between">
+            <div className="d-flex flex-row justify-content-around">
               <div>
-                <p className="card-text float-left text-secondary">By: {instructor}</p>
+                <p className="card-text float-left font-weight-bold">By: {instructor}</p>
               </div>
               <div>
-                <p className="card-text float-right text-secondary">Price: ${price}</p>
+                <p className="card-text float-right font-weight-bold">Price: ${price}</p>
               </div>
             </div>
             <div className="row justify-content-center">
-              <a href={url} target="_blank">
-                <img src={imageUrl} alt="learn somethin" />
+              <a href={url} target="_blank" className="p-4">
+                <img src={imageUrl} alt="learn somethin" className="rounded" />
               </a>
-              <p className="card-text text-secondary">{description}</p>
+              <p className="card-text font-weight-bold">{description}</p>
             </div>
           </div>
         </div>
