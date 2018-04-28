@@ -77,7 +77,7 @@ class Courses extends Component {
           {sortedCourses.map(course => (
             <Course
               setActiveCourse={this.props.setActiveCourse}
-              {...course}
+              user={this.props.user}
               course={course}
               key={course.id}
             />
@@ -88,11 +88,10 @@ class Courses extends Component {
   };
 }
 
-Courses.propTypes = {
-  courses: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = state => ({ courses: state.courses });
+const mapStateToProps = state => ({
+  courses: state.courses,
+  user: state.user,
+});
 
 const mapDispatchToProps = dispatch => ({
   setActiveCourse: course => dispatch(setActiveCourse(course)),

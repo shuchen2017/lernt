@@ -174,7 +174,7 @@ app.get('/api/categories', async (req, res) => {
 });
 
 // ADD OR MODIFY VOTE
-app.post('/api/vote', isLoggedIn, (req, res) => {
+app.post('/api/vote', (req, res) => {
   const voteInfo = req.body;
 
   ADD_VOTE(voteInfo).then((vote) => {

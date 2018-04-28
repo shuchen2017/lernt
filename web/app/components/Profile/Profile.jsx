@@ -15,9 +15,23 @@ class Profile extends Component {
           &&
           <Redirect to="/" />
         }
-        <div className="card">
-          <div className="card-title">
-            <h3 className="text-primary text-center">{this.props.username}</h3>
+        <div className="card text-center">
+          <div className="card-body">
+            <div className="card-title">
+              <h3 className="text-primary text-center">{this.props.username}</h3>
+            </div>
+            <div className="card-text">
+              View your profile information and upvoted courses!
+            </div>
+            <br />
+            <div className="row">
+              <div className="col-sm-6">
+                <h4>Upvoted courses</h4>
+              </div>
+              <div className="col-sm-6">
+                <h4>Profile information</h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React, { Component, StrictMode } from 'react';
 import AnimatedWrapper from '../AnimatedWrapper';
 import { getCategoriesAsync } from '../../actions/categories';
+import { fetchCoursesAsync } from '../../actions/courses';
 import { connect } from 'react-redux';
 
 class Landing extends Component {
@@ -9,7 +10,10 @@ class Landing extends Component {
 
   };
 
-  componentDidMount = () => this.props.getCategoriesAsync();
+  componentDidMount = () => {
+    this.props.fetchCoursesAsync();
+    this.props.getCategoriesAsync();
+  }
 
   render = () => (
     <StrictMode>
@@ -29,6 +33,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCategoriesAsync: () => dispatch(getCategoriesAsync()),
+  fetchCoursesAsync: () => dispatch(fetchCoursesAsync()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Landing);

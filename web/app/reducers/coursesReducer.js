@@ -1,9 +1,15 @@
-import { FETCH_COURSES, FILTER_BY_CATEGORY } from '../actions/courses';
+import { FETCH_COURSES, FILTER_BY_CATEGORY, UPVOTE, DOWNVOTE, DELETE_VOTE } from '../actions/courses';
 
 const initialState = {};
 
 const coursesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case UPVOTE:
+      return state;
+    case DOWNVOTE:
+      return state;
+    case DELETE_VOTE: 
+      return state;
     case FETCH_COURSES:
       return Object.assign({}, state, { ...action.courses });
     case FILTER_BY_CATEGORY:

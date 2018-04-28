@@ -86,10 +86,6 @@ class NavBar extends Component {
   };
 }
 
-NavBar.propTypes = {
-  user: PropTypes.object.isRequired,
-};
-
 const mapStateToProps = state => ({ user: state.user });
 
 const mapDispatchToProps = dispatch => ({ logout: () => dispatch(logout()) });
