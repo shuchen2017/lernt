@@ -17,9 +17,11 @@ class AddCourse extends Component {
     });
   };
 
-  search = () => {
+  search = async () => {
+    const searchResults = await searchUdemy(this.state.searchTerm);
+
     this.setState({
-      searchResults: searchUdemy(this.state.searchTerm),
+      searchResults,
     });
   };
 
@@ -49,22 +51,24 @@ class AddCourse extends Component {
               </span>
             </div>
           </div>
+          {this.state.searchResults.map(result => (
+            <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
+            ))}
         </div>
         {this.state.searchResults.map(result => (
           <Course addCourseAsync={this.props.addCourseAsync} {...result} />
           ))}
       </div>
-      {this.state.searchResults.map(result => (
-        <Course addCourseAsync={addCourseAsync} {...result} />
-        ))}
     </StrictMode>
   );
 }
 
-const mapStateToProps = state => ({ ...state.user });
+const mapStateToProps = state => ({
+  id: state.user.id,
+});
 
 const mapDispatchToProps = dispatch => ({
   addCourseAsync: course => dispatch(addCourseAsync(course)),
 });
 
-export default connect(mapDispatchToProps)(AddCourse);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCourse);

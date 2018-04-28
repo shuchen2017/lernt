@@ -149,12 +149,11 @@ app.get('/api/courses', (req, res) => {
 // ADD NEW COURSE
 app.post('/api/courses', (req, res) => {
   const courseInfo = req.body;
-
   // If successful returns added course, else 404
   ADD_COURSE(courseInfo)
     .then(course => res.send(course))
     // Make 404
-    .catch(() => res.status(404).send('already in db!'));
+    .catch(() => res.status(402).send('already in db!'));
 });
 
 // GET ALL CATEGORIES
