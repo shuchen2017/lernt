@@ -1,29 +1,53 @@
 import React, { Component, StrictMode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CategoriesBar from './CategoriesBar';
 import FilterBar from './FilterBar';
-import { setActiveCourse, fetchCoursesAsync, upvoteAsync, downvoteAsync, filterByCategory } from '../../actions/courses';
+import {
+  setActiveCourse,
+  fetchCoursesAsync,
+  upvoteAsync,
+  downvoteAsync,
+  filterByCategory,
+} from '../../actions/courses';
 import Course from './Course.jsx';
 
 class Courses extends Component {
+  state = {
+    displayedCategory: 'all',
+  };
 
   componentDidMount = () => this.props.fetchCoursesAsync();
 
-  render = () => (
-    <StrictMode>
-      <FilterBar filterByCategory={this.props.filterByCategory} />
-      <div className="container">
-        {Object.values(this.props.courses).map(course => (
-          <Course
-            setActiveCourse={this.props.setActiveCourse}
-            user={this.props.user}
-            course={course}
-            key={course.id}
-          />
-        ))}
-      </div>
-    </StrictMode>
-  );
+  changeDisplayedCategory = (displayedCategory) => {
+    this.setState({ displayedCategory });
+  };
+
+  // Add back later:
+  // <FilterBar filterByCategory={this.props.filterByCategory} />
+
+  render = () => {
+    const filteredCourses =
+      this.state.displayedCategory === 'all'
+        ? Object.values(this.props.courses)
+        : Object.values(this.props.courses).filter(course => course.category === this.state.displayedCategory);
+
+    return (
+      <StrictMode>
+        <CategoriesBar changeDisplayedCategory={this.changeDisplayedCategory} />
+        <div className="container">
+          {filteredCourses.map(course => (
+            <Course
+              setActiveCourse={this.props.setActiveCourse}
+              {...course}
+              course={course}
+              key={course.id}
+            />
+          ))}
+        </div>
+      </StrictMode>
+    );
+  };
 }
 
 Courses.propTypes = {

@@ -1,16 +1,19 @@
-import ReactDOM from 'react-dom';
+// React
 import React from 'react';
-import App from 'components/App';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './reducers/index';
+import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+// Redux
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+// Middleware
+import thunk from 'redux-thunk';
+// Components
+import rootReducer from './reducers/index';
+import App from './components/App';
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk),
-);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
@@ -18,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
-    , document.querySelector('#app'));
+    </Provider>,
+    document.querySelector('#app'),
+  );
 });

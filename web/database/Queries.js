@@ -50,11 +50,11 @@ const ADD_USER = async (userInfo) => {
 // Add Course
 // Params: title. url, instructor, description, price, category, submitted_by: userId
 const ADD_COURSE = async (courseInfo) => {
-  const { url, submittedBy: submitted_by } = courseInfo;
+  const { url, submittedBy: submitted_by, imageUrl: img_url } = courseInfo;
 
   const [course, created] = await Course.findOrCreate({
     where: { url },
-    defaults: { ...courseInfo, submitted_by },
+    defaults: { ...courseInfo, submitted_by, img_url },
   });
 
   return created ? course : undefined;
@@ -157,7 +157,22 @@ const DELETE_VOTE = (voteInfo) => {
     .catch(err => undefined);
 };
 
-const GET_COURSES = () => Course.findAll();
+const GET_COURSES = () =>
+  Course.findAll({
+    attributes: [
+      'id',
+      'title',
+      'url',
+      'category',
+      ['submitted_by', 'submittedBy'],
+      'instructor',
+      'description',
+      'price',
+      ['img_url', 'imageUrl'],
+      ['up_votes', 'upVotes'],
+      ['down_votes', 'downVotes'],
+    ],
+  });
 
 module.exports = {
   FETCH_USER,
