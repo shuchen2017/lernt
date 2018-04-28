@@ -9,55 +9,66 @@ class AddCourse extends Component {
   state = {
     searchTerm: '',
     searchResults: [],
-  }
+  };
 
   handleSearchInputChange = (e, data) => {
     this.setState({
       searchTerm: e.target.value,
     });
-  }
+  };
 
-  search = () => {
+  search = async () => {
+    const searchResults = await searchUdemy(this.state.searchTerm);
+
     this.setState({
-      searchResults: searchUdemy(this.state.searchTerm),
+      searchResults,
     });
-  }
+  };
 
-  render = () => {
-    return (
-      <StrictMode>
-        {
-          this.props.username === ''
-          &&
-          <Redirect to="/" />
-        }
-        <div className="container">
-          <div className="card">
-            <div className="card-title">
-              <h3 className="text-primary text-center">ADD A COURSE</h3>
-            </div>
-            <div className="card-body">
-              <div className="input-group">
-                <input type="text" className="form-control" value={this.state.searchTerm} onChange={this.handleSearchInputChange} placeholder="search courses..." />
-                <span className="input-group-btn">
-                  <button className="btn btn-default glyphicon glyphicon-search" type="button" onClick={this.search} />
-                </span>
-              </div>
+  render = () => (
+    <StrictMode>
+      {this.props.username === '' && <Redirect to="/" />}
+      <div className="container">
+        <div className="card">
+          <div className="card-title">
+            <h3 className="text-primary text-center">ADD A COURSE</h3>
+          </div>
+          <div className="card-body">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                value={this.state.searchTerm}
+                onChange={this.handleSearchInputChange}
+                placeholder="search courses..."
+              />
+              <span className="input-group-btn">
+                <button
+                  className="btn btn-default glyphicon glyphicon-search"
+                  type="button"
+                  onClick={this.search}
+                />
+              </span>
             </div>
           </div>
-          {
-            this.state.searchResults.map(result => (
-              <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
-            ))
-          }
+          {this.state.searchResults.map(result => (
+            <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
+            ))}
         </div>
-      </StrictMode>
-    );
-  }
+        {this.state.searchResults.map(result => (
+          <Course addCourseAsync={this.props.addCourseAsync} {...result} />
+          ))}
+      </div>
+    </StrictMode>
+  );
 }
+
+const mapStateToProps = state => ({
+  id: state.user.id,
+});
 
 const mapDispatchToProps = dispatch => ({
   addCourseAsync: course => dispatch(addCourseAsync(course)),
 });
 
-export default connect(mapDispatchToProps)(AddCourse);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCourse);

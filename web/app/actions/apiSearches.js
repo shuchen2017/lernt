@@ -14,7 +14,11 @@ export const searchUdemy = async (searchTerm) => {
       username: API_UDEMY_USERNAME,
       password: API_UDEMY_PASSWORD,
     },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   });
+
   return data.results.map(result => ({
     category: result.primary_subcategory.title,
     description: result.headline,
@@ -24,4 +28,4 @@ export const searchUdemy = async (searchTerm) => {
     price: Number(result.price.slice(1)),
     title: result.title,
   }));
-}
+};
