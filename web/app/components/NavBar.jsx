@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import UserModal from './Modals/UserModal';
+import { logout } from '../actions/user';
 
 class NavBar extends Component {
   state = {
@@ -45,20 +46,20 @@ class NavBar extends Component {
                 Courses
               </Link>
             </div>
-            <div className="nav-item clickable">
-              <Link to="/courses/add" className="nav-link">
-                Add Course
-              </Link>
-            </div>
             {this.props.user.username !== '' ? (
               <Fragment>
+                <div className="nav-item clickable">
+                  <Link to="/courses/add" className="nav-link">
+                    Add Course
+                  </Link>
+                </div>
                 <div className="nav-item clickable">
                   <Link to={`/profile/${this.props.user.username}`} className="nav-link">
                     Profile
                   </Link>
                 </div>
                 <div className="nav-item clickable">
-                  <a className="nav-link" onClick={this.toggleModal}>
+                  <a className="nav-link" onClick={this.props.logout}>
                     Logout
                   </a>
                 </div>
@@ -70,13 +71,14 @@ class NavBar extends Component {
                 </a>
               </div>
             )}
-            {this.state.modal && (
-              <UserModal
-                isOpen={this.state.modal}
-                toggle={this.toggleModal}
-                modalType={this.state.modalSelected}
-              />
-            )}
+            {this.state.modal &&
+              this.props.user.username === '' && (
+                <UserModal
+                  isOpen={this.state.modal}
+                  toggle={this.toggleModal}
+                  modalType={this.state.modalSelected}
+                />
+              )}
           </div>
         </div>
       </nav>
@@ -90,4 +92,6 @@ NavBar.propTypes = {
 
 const mapStateToProps = state => ({ user: state.user });
 
-export default connect(mapStateToProps)(NavBar);
+const mapDispatchToProps = dispatch => ({ logout: () => dispatch(logout()) });
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

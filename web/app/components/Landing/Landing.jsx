@@ -16,7 +16,7 @@ class Landing extends Component {
       <div className="jumbotron">
         <h1 className="display-4"> LERNT </h1>
         {this.props.categories.map(category => (
-          <p>{category}</p>
+          <p key={category}>{category}</p>
         ))}
       </div>
     </StrictMode>

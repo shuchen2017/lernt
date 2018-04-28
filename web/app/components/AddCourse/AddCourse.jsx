@@ -1,6 +1,6 @@
 import React, { Component, StrictMode } from 'react';
 import { connect } from 'react-redux';
-
+import { Redirect } from 'react-router-dom';
 import Course from './Course';
 import { searchUdemy } from '../../actions/apiSearches';
 import { addCourseAsync } from '../../actions/courses';
@@ -25,6 +25,7 @@ class AddCourse extends Component {
 
   render = () => (
     <StrictMode>
+      {this.props.username === '' && <Redirect to="/" />}
       <div className="container">
         <div className="card">
           <div className="card-title">
@@ -48,17 +49,19 @@ class AddCourse extends Component {
               </span>
             </div>
           </div>
-          {this.state.searchResults.map(result => (
-            <Course addCourseAsync={this.props.addCourseAsync} {...result} />
-          ))}
         </div>
         {this.state.searchResults.map(result => (
-          <Course addCourseAsync={addCourseAsync} {...result} />
-        ))}
+          <Course addCourseAsync={this.props.addCourseAsync} {...result} />
+          ))}
       </div>
+      {this.state.searchResults.map(result => (
+        <Course addCourseAsync={addCourseAsync} {...result} />
+        ))}
     </StrictMode>
   );
 }
+
+const mapStateToProps = state => ({ ...state.user });
 
 const mapDispatchToProps = dispatch => ({
   addCourseAsync: course => dispatch(addCourseAsync(course)),
