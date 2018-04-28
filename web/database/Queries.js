@@ -93,7 +93,6 @@ const CHANGE_COURSE_RANKING = async ({ courseId, voteType, voteChangeType }) => 
 // TODO: Catch invalid ids
 const ADD_VOTE = async (voteInfo) => {
   const { userId: user_id, courseId: course_id, voteType: vote_type } = voteInfo;
-
   try {
     // Finds or creates vote
     let [vote, created] = await Vote.findOrCreate({

@@ -16,7 +16,7 @@ class Courses extends Component {
         {Object.values(this.props.courses).map(course => (
           <Course
             setActiveCourse={this.props.setActiveCourse}
-            {...course}
+            user={this.props.user}
             course={course}
             key={course.id}
           />
