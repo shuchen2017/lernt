@@ -74,7 +74,7 @@ ROUTE LEGEND:
       - Returns all courses in object { id: { courseInfo } }
     - Add new course:
       - Route: POST api/courses
-      - Takes: { title, url, category, submitted_by: userId, optional[ instructor, description, price: float, ]}
+      - Takes: { title, url, category, submittedBy: userId, optional[ instructor, description, price: float, imageUrl]}
       - Returns: If successful, course object, else 404
   VOTES:
     - Add Vote (also used to change from upvote to downvote)
@@ -136,9 +136,11 @@ app.get('/api/courses', (req, res) => {
   GET_COURSES()
     .then((courses) => {
       const coursesById = {};
+
       courses.forEach((course) => {
         coursesById[course.id] = course;
       });
+
       res.send(coursesById);
     })
     .catch(err => res.send('404'));
@@ -159,15 +161,14 @@ app.post('/api/courses', (req, res) => {
 // Returns an array of all categories found.
 app.get('/api/categories', async (req, res) => {
   try {
-    GET_COURSES()
-      .then((courses) => {
-        courses = courses.map(course => course.dataValues);
-        const categories = courses.reduce((found, { category }) => {
-          if (found.indexOf(category) === -1) found.push(category);
-          return found;
-        }, []);
-        res.send(categories);
-      });
+    GET_COURSES().then((courses) => {
+      courses = courses.map(course => course.dataValues);
+      const categories = courses.reduce((found, { category }) => {
+        if (found.indexOf(category) === -1) found.push(category);
+        return found;
+      }, []);
+      res.send(categories);
+    });
   } catch (err) {
     res.status(500).send();
   }
