@@ -7,7 +7,7 @@ export const searchUdemy = async (searchTerm) => {
       search: searchTerm,
       category: 'Development',
       'fields[course]':
-        'title,headline,image_480x270,price,avg_rating,created,url,visible_instructors',
+        'title,headline,image_480x270,price,url,visible_instructors,primary_subcategory',
       'fields[user]': 'title',
     },
     auth: {
@@ -16,13 +16,12 @@ export const searchUdemy = async (searchTerm) => {
     },
   });
   return data.results.map(result => ({
-    createdAt: result.created,
+    category: result.primary_subcategory.title,
     description: result.headline,
     imageUrl: result.image_480x270,
     instructor: result.visible_instructors[0].title,
-    link: `https://www.udemy.com${result.url}`,
-    price,
-    rating: result.avg_rating,
-    title,
+    url: `https://www.udemy.com${result.url}`,
+    price: Number(result.price.slice(1)),
+    title: result.title,
   }));
 }
