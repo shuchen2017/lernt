@@ -20,6 +20,7 @@ class UserModal extends Component {
   });
 
   state = {
+    username: '',
     email: '',
     password: '',
     secondPassword: '',
@@ -28,6 +29,8 @@ class UserModal extends Component {
     alertText: '',
     alertColor: 'text-success',
   };
+
+  handleChangeUsername = e => this.setState({ username: e.target.value })
 
   handleChangeEmail = e => this.setState({ email: e.target.value });
 
@@ -42,21 +45,23 @@ class UserModal extends Component {
   );
 
   render = () => {
-    const { email, password, secondPassword, modalType, isOpen, alertText, alertColor } = this.state;
+    const { handleChangeUsername, handleChangeEmail, handleChangePassword, handleChangeSecondPassword, toggleModalType } = this;
+    const { username, email, password, secondPassword, modalType, isOpen, alertText, alertColor } = this.state;
     const { toggle } = this.props;
     const modalProps = {
       alertText,
       alertColor,
+      username,
+      handleChangeUsername,
       email,
-      handleChangeEmail: this.handleChangeEmail,
+      handleChangeEmail,
       password,
-      handleChangePassword: this.handleChangePassword,
+      handleChangePassword,
       secondPassword,
-      handleChangeSecondPassword: this.handleChangeSecondPassword,
-      toggleModalType: this.toggleModalType,
+      handleChangeSecondPassword,
+      toggleModalType,
       toggleModal: toggle, 
     };
-    console.log(this.state);
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
         {
@@ -82,4 +87,4 @@ const mapDispatchToProps = dispatch => ({
   signupAsync: userInfo => dispatch(signupAsync(userInfo)),
 });
 
-export default connect(() => {}, mapDispatchToProps)(UserModal);
+export default connect(() => ({}), mapDispatchToProps)(UserModal);
