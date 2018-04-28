@@ -15,5 +15,8 @@ exports.server = {
 };
 
 exports.plugins = {
-  babel: { presets: ['env', 'react', 'stage-2'] },
+  babel: {
+    presets: ['env', 'react', 'stage-2'],
+    plugins: ['transform-runtime'],
+  },
 };

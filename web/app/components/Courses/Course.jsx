@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Upvote from './Upvote.jsx';
 
-const Course = ({ title, id, price, author, description, videoUrl, setActiveCourse }) => (
+const Course = ({ title, id, price, instructor, description, course, setActiveCourse }) => (
   <div className="card">
     <div className="card-body">
       <h3 className="card-title">
-        <Link to={`/courses/${id}`} onClick={() => setActiveCourse({ title, id, price, author, description, videoUrl })} >
+        <Link to={`/courses/${id}`} onClick={() => setActiveCourse(course)} >
           {title}
         </Link>
       </h3>
@@ -15,7 +15,7 @@ const Course = ({ title, id, price, author, description, videoUrl, setActiveCour
         Price: ${price}
       </span>
       <h6 className="card-subtitle text-muted">
-        By: {author}
+        By: {instructor}
       </h6>
       <p className="card-text text-secondary">{description}</p>
       <p className="card-subtitle small text-muted text-center">Click for more details</p>

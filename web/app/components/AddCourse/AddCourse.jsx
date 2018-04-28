@@ -2,12 +2,8 @@ import React, { Component, StrictMode } from 'react';
 import { connect } from 'react-redux';
 
 import Course from './Course';
-// import { searchUdemy } from './apiSearches';
-import { addCourseAsync } from './actions';
-
-const searchUdemy = () => {
-  'world';
-};
+import { searchUdemy } from '../../actions/apiSearches';
+import { addCourseAsync } from '../../actions/courses';
 
 class AddCourse extends Component {
   state = {
@@ -52,6 +48,9 @@ class AddCourse extends Component {
               </span>
             </div>
           </div>
+          {this.state.searchResults.map(result => (
+            <Course addCourseAsync={this.props.addCourseAsync} {...result} />
+          ))}
         </div>
         {this.state.searchResults.map(result => (
           <Course addCourseAsync={addCourseAsync} {...result} />

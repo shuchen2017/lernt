@@ -135,7 +135,10 @@ app.post('/api/logout', isLoggedIn, (req, res) => {
 app.get('/api/courses', (req, res) => {
   GET_COURSES()
     .then((courses) => {
-      const coursesById = courses.map(course => ({ [course.id]: course }));
+      const coursesById = {};
+      courses.forEach((course) => {
+        coursesById[course.id] = course;
+      });
       res.send(coursesById);
     })
     .catch(err => res.send('404'));
@@ -152,6 +155,23 @@ app.post('/api/courses', (req, res) => {
     .catch(() => res.status(404).send('already in db!'));
 });
 
+// GET ALL CATEGORIES
+// Returns an array of all categories found.
+app.get('/api/categories', async (req, res) => {
+  try {
+    GET_COURSES()
+      .then((courses) => {
+        courses = courses.map(course => course.dataValues);
+        const categories = courses.reduce((found, { category }) => {
+          if (found.indexOf(category) === -1) found.push(category);
+          return found;
+        }, []);
+        res.send(categories);
+      });
+  } catch (err) {
+    res.status(500).send();
+  }
+});
 // ADD OR MODIFY VOTE
 app.post('/api/vote', isLoggedIn, (req, res) => {
   const voteInfo = req.body;
@@ -203,11 +223,6 @@ app.get('/api/user/:id', (req, res) => {
       res.status(201).send(user);
     })
     .catch(err => res.status(401).send('Could not find user'));
-});
-
-// AJAX to /action.
-app.post('/action', (req, res, next) => {
-  res.send('POST action completed!');
 });
 
 // Export the module like this for Brunch.

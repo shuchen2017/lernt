@@ -16,63 +16,74 @@ class NavBar extends Component {
 
   toggleModal = () => this.setState(prevState => ({ modal: !prevState.modal }));
 
-  render = () => (
-    <nav className="navbar navbar-expand-md bg-info">
-      <div className="container">
-        <div className="navbar-translate">
-          <Link to="/" className="navbar-brand">
-            Home
-          </Link>
-          <button
-            className="navbar-toggler navbar-toggler-right"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navigation"
-            aria-controls="navigation-index"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-bar bar1" />
-            <span className="navbar-toggler-bar bar2" />
-            <span className="navbar-toggler-bar bar3" />
-          </button>
-        </div>
-        <div className="collapse navbar-collapse navbar-nav ml-auto">
-          <div className="nav-item clickable">
-            <Link to="/courses/" className="nav-link">
-              Courses
+  render = () => {
+    console.log(this.state)
+    return (
+      <nav className="navbar navbar-expand-md bg-info">
+        <div className="container">
+          <div className="navbar-translate">
+            <Link to="/" className="navbar-brand">
+              Home
             </Link>
+            <button
+              className="navbar-toggler navbar-toggler-right"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navigation"
+              aria-controls="navigation-index"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-bar bar1" />
+              <span className="navbar-toggler-bar bar2" />
+              <span className="navbar-toggler-bar bar3" />
+            </button>
           </div>
-          <div className="nav-item clickable">
-            <Link to="/courses/add" className="nav-link">
-              Add Course
-            </Link>
-          </div>
-          {this.props.user.username !== '' ? (
-            <Fragment>
-              <div className="nav-item clickable">
-                <Link to={`/profile/${this.props.user.username}`} className="nav-link">
-                  Profile
-                </Link>
-              </div>
+          <div className="collapse navbar-collapse navbar-nav ml-auto">
+            <div className="nav-item clickable">
+              <Link to="/courses/" className="nav-link">
+                Courses
+              </Link>
+            </div>
+            <div className="nav-item clickable">
+              <Link to="/courses/add" className="nav-link">
+                Add Course
+              </Link>
+            </div>
+            {this.props.user.username !== '' ? (
+              <Fragment>
+                <div className="nav-item clickable">
+                  <Link to={`/profile/${this.props.user.username}`} className="nav-link">
+                    Profile
+                  </Link>
+                </div>
+                <div className="nav-item clickable">
+                  <a className="nav-link" onClick={this.toggleModal}>
+                    Logout
+                  </a>
+                </div>
+              </Fragment>
+            ) : (
               <div className="nav-item clickable">
                 <a className="nav-link" onClick={this.toggleModal}>
-                  Logout
+                  Login
                 </a>
               </div>
-            </Fragment>
-          ) : (
-            <div className="nav-item clickable">
-              <a className="nav-link" onClick={this.toggleModal}>
-                Login
-              </a>
-            </div>
-          )}
-          <UserModal isOpen={this.state.modal} toggle={this.toggleModal} />
+            )}
+            {
+              this.state.modal
+              &&
+              <UserModal 
+                isOpen={this.state.modal}
+                toggle={this.toggleModal}
+                modalType={this.state.modalSelected}
+              />
+            }
+          </div>
         </div>
-      </div>
-    </nav>
-  );
+      </nav>
+    );
+  }
 }
 
 NavBar.propTypes = {
