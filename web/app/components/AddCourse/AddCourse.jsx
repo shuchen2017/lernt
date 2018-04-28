@@ -51,13 +51,12 @@ class AddCourse extends Component {
               </span>
             </div>
           </div>
-          {this.state.searchResults.map(result => (
-            <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
+          <div className="container">
+            {this.state.searchResults.map(result => (
+              <Course id={this.props.id} addCourseAsync={this.props.addCourseAsync} {...result} />
             ))}
+          </div>
         </div>
-        {this.state.searchResults.map(result => (
-          <Course addCourseAsync={this.props.addCourseAsync} {...result} />
-          ))}
       </div>
     </StrictMode>
   );
