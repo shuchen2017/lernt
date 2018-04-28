@@ -111,7 +111,7 @@ app.post('/api/signup', (req, res) => {
         res.status(401).send('Username or password in use!');
       }
     })
-    .catch(err => console.log('some error', err));
+    .catch(err => res.status(403).send('something failed on signup'));
 });
 
 // LOGIN
@@ -172,6 +172,7 @@ app.get('/api/categories', async (req, res) => {
     res.status(500).send();
   }
 });
+
 // ADD OR MODIFY VOTE
 app.post('/api/vote', isLoggedIn, (req, res) => {
   const voteInfo = req.body;
