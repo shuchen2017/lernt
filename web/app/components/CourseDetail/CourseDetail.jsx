@@ -27,9 +27,13 @@ const CourseDetail = ({
               </button>
               <h1 className="text-primary text-center">{title}</h1>
             </div>
-            <div className="d-flex flex-row">
-              <p className="card-text float-left text-secondary">By: {instructor}</p>
-              <p className="card-text float-right text-secondary">Price: ${price}</p>
+            <div className="row">
+              <div>
+                <p className="card-text float-left text-secondary">By: {instructor}</p>
+              </div>
+              <div>
+                <p className="card-text float-right text-secondary">Price: ${price}</p>
+              </div>
             </div>
             <div className="row">
               <img src={imageUrl} alt="learn somethin" />
