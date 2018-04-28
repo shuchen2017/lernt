@@ -1,7 +1,7 @@
 import React, { Component, StrictMode } from 'react';
 import { Link } from 'react-router-dom';
 import Votes from './Votes.jsx';
-import { handleVote } from '../../actions/courses';
+import { handleVote, deleteVoteAsync } from '../../actions/courses';
 import { connect } from 'react-redux';
 
 class Course extends Component {
@@ -10,9 +10,35 @@ class Course extends Component {
     upVote: false,
     downVote: false,
     displayLoginWarning: false,
+    upVotes: this.props.course.upVotes,
+    downVotes: this.props.course.downVotes,
+    count: this.props.course.upVotes - this.props.course.downVotes
   }
 
   toggleHasVoted = () => this.setState(prevState => ({ hasVoted: !prevState.hasVoted }));
+
+  handleVote = (userId, courseId, voteType) => {
+    if (this.props.user.username === '') {
+      this.setState({ displayLoginWarning: true });
+      return;
+    } else if (!this.state.hasVoted) {
+      this.setState({ [voteType]: true, hasVoted: true });
+      this.props.handleVote(userId, courseId, voteType);
+    } else {
+      if (this.state[voteType]) {
+        this.setState({ hasVoted: false });
+        this.setState({ [voteType]: false });
+        this.props.deleteVoteAsync(userId, courseId, voteType);
+      } else {
+        const notVoteType = voteType === 'upVote' ? 'downVote' : 'upVote';
+        this.setState({ [voteType]: true});
+        this.setState({ [notVoteType]: false});
+        this.props.handleVote(userId, courseId, voteType);
+      }
+      console.log('fuck off eslint');
+    }
+    this.setState({ displayLoginWarning: false });
+  }
 
   render = () => {
     const { course, user, setActiveCourse, handleVote } = this.props;
@@ -36,8 +62,7 @@ class Course extends Component {
         <Votes
           userId={user.id}
           courseId={course.id}
-          count={course.upvotes - course.downvotes}
-          handleVote={handleVote}
+          handleVote={this.handleVote}
           {...this.state}
         />
       </div>
@@ -47,6 +72,7 @@ class Course extends Component {
 
 const mapDispatchToProps = dispatch => ({
   handleVote: (userId, courseId, voteType) => dispatch(handleVote(userId, courseId, voteType)),
+  deleteVoteAsync: (userId, courseId, voteType) => dispatch(deleteVoteAsync(userId, courseId, voteType)),
 });
 
 export default connect(() => ({}), mapDispatchToProps)(Course);

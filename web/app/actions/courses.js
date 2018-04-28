@@ -4,6 +4,7 @@ export const SET_ACTIVE_COURSE = 'SET_ACTIVE_COURSE';
 export const FETCH_COURSES = 'FETCH_COURSES';
 export const UPVOTE = 'UPVOTE';
 export const DOWNVOTE = 'DOWNVOTE';
+export const DELETE_VOTE = 'DELETE_VOTE';
 export const FILTER_BY_CATEGORY = 'FILTER_BY_CATEGORY';
 
 export const setActiveCourse = course => ({
@@ -28,12 +29,25 @@ const voteActions = {
     courseId,
   }),
 };
+
+const deleteVote = (userId, courseId) => ({
+  type: DELETE_VOTE,
+  userId,
+  courseId,
+});
+
 export const handleVote = (userId, courseId, voteType) => {
   return async (dispatch) => {
     await axios.post('/api/vote', { userId, courseId, voteType });
     dispatch(voteActions[voteType](userId, courseId));
   };
+};
 
+export const deleteVoteAsync = (userId, courseId, voteType) => {
+  return async (dispatch) => {
+    await axios.delete('/api/vote', { userId, courseId, voteType });
+    dispatch(deleteVote(userId, courseId));
+  };
 };
 
 const filterByCategory = category => ({

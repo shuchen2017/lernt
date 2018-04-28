@@ -2,6 +2,7 @@ import React, { Component, StrictMode } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CategoriesBar from './CategoriesBar';
+import SortBar from './SortBar';
 import FilterBar from './FilterBar';
 import {
   setActiveCourse,
@@ -15,6 +16,7 @@ import Course from './Course.jsx';
 class Courses extends Component {
   state = {
     displayedCategory: 'all',
+    sortType: '',
   };
 
   componentDidMount = () => this.props.fetchCoursesAsync();
@@ -22,6 +24,39 @@ class Courses extends Component {
   changeDisplayedCategory = (displayedCategory) => {
     this.setState({ displayedCategory });
   };
+
+  changeSortType = (sortType) => {
+    this.setState({ sortType });
+  };
+
+  sortCourses(courses) {
+    const { sortType } = this.state;
+    const sortableCourses = [...courses];
+
+    switch (sortType) {
+      case 'highest':
+        return sortableCourses.sort((course1, course2) => {
+          const course1Rank = course1.upVotes - course1.downVotes;
+          const course2Rank = course2.upVotes - course2.downVotes;
+
+          return course2Rank - course1Rank;
+        });
+      case 'lowest':
+        return sortableCourses.sort((course1, course2) => {
+          const course1Rank = course1.upVotes - course1.downVotes;
+          const course2Rank = course2.upVotes - course2.downVotes;
+
+          return course1Rank - course2Rank;
+        });
+      case 'expensive':
+        return sortableCourses.sort((course1, course2) => course2.price - course1.price);
+      case 'cheapest':
+        return sortableCourses.sort((course1, course2) => course1.price - course2.price);
+
+      default:
+        return sortableCourses;
+    }
+  }
 
   // Add back later:
   // <FilterBar filterByCategory={this.props.filterByCategory} />
@@ -32,11 +67,14 @@ class Courses extends Component {
         ? Object.values(this.props.courses)
         : Object.values(this.props.courses).filter(course => course.category === this.state.displayedCategory);
 
+    const sortedCourses = this.sortCourses(filteredCourses);
+
     return (
       <StrictMode>
         <CategoriesBar changeDisplayedCategory={this.changeDisplayedCategory} />
+        <SortBar changeSortType={this.changeSortType} />
         <div className="container">
-          {filteredCourses.map(course => (
+          {sortedCourses.map(course => (
             <Course
               setActiveCourse={this.props.setActiveCourse}
               user={this.props.user}

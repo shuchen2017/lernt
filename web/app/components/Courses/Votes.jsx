@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-const Votes = ({ count, userId, courseId, displayLoginWarning, handleVote, upVote, downVote }) => {
+const Votes = ({ count, userId, courseId, displayLoginWarning, handleVote, upVote, downVote, hasVoted }) => {
   const upVoteClassNames = `btn btn-${upVote ? 'success' : 'muted'}`;
   const downVoteClassNames = `btn btn-${downVote ? 'warning' : 'muted'}`;
   return (
@@ -23,7 +23,8 @@ const Votes = ({ count, userId, courseId, displayLoginWarning, handleVote, upVot
       Upvote Count: {count}
       </span>
       {
-        displayLoginWarning &&
+        displayLoginWarning 
+        &&
         <span className="text-warning space-span-left">
           Please log in to vote!
         </span>
