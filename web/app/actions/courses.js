@@ -16,23 +16,25 @@ const fetchCourses = courses => ({
   courses,
 });
 
-const upvote = course => ({
+const upVote = (userId, courseId) => ({
   type: UPVOTE,
-  course,
+  userId,
+  courseId,
 });
 
-const downvote = course => ({
+const downVote = (userId, courseId) => ({
   type: DOWNVOTE,
-  course
+  userId,
+  courseId,
 });
 
-export const upvoteAsync = course => ({
-  // TODO: FILL IN
-});
+export const handleVote = (userId, courseId, voteType) => {
+  return async (dispatch) => {
+    await axios.post('/api/vote', { userId, courseId, voteType });
+    dispatch([voteType](userId, courseId));
+  };
 
-export const downvoteAsync = course => ({
-  // TODO: FILL IN
-});
+};
 
 const filterByCategory = category => ({
   type: FILTER_BY_CATEGORY,

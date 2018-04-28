@@ -30,7 +30,10 @@ Courses.propTypes = {
   courses: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({ courses: state.courses });
+const mapStateToProps = state => ({
+  courses: state.courses,
+  user: state.user,
+});
 
 const mapDispatchToProps = dispatch => ({
   setActiveCourse: course => dispatch(setActiveCourse(course)),

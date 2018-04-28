@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Upvote from './Upvote.jsx';
+import Votes from './Votes.jsx';
 
 const Course = ({ title, id, price, instructor, description, course, setActiveCourse }) => (
   <div className="card">
@@ -20,7 +20,7 @@ const Course = ({ title, id, price, instructor, description, course, setActiveCo
       <p className="card-text text-secondary">{description}</p>
       <p className="card-subtitle small text-muted text-center">Click for more details</p>
     </div>
-    <Upvote count={0} displayLoginWarning={false} handleUpvoteClick={() => console.log('upvote!')} />
+    <Votes count={0} displayLoginWarning={false} handleUpvoteClick={() => console.log('upvote!')} />
   </div>
 );
 

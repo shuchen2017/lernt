@@ -1,13 +1,20 @@
 import React, { Fragment } from 'react';
 
-const Upvote = ({ count, displayLoginWarning, handleUpvoteClick }) => (
+const Upvote = ({ count, userId, courseId, displayLoginWarning, handleVote }) => (
   <div className="card-footer bg-secondary">
     <button
       type="button"
       className="btn btn-muted"
-      onClick={handleUpvoteClick}
+      onClick={() => handleVote(userId, courseId, 'upVote')}
     >
       <i className="fas fa-chevron-up" />
+    </button>
+    <button
+      type="button"
+      className="btn btn-muted"
+      onClick={() => handleVote(userId, courseId, 'downVote')}
+    >
+      <i className="fas fa-chevron-down" />
     </button>
     <span className="card-text text-light ml-2">
     Upvote Count: {count}
