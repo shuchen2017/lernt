@@ -101,14 +101,14 @@ app.post('/api/signup', (req, res) => {
       if (createdUser) {
         req.login(createdUser, (err) => {
           if (err) {
-            res.status(404).send('Some unknown error logging in');
+            res.status(500).send('Some unknown error logging in');
           } else {
             // DONT SEND PASSWORD
             res.send(createdUser);
           }
         });
       } else {
-        res.status(404).send('Username or password in use!');
+        res.status(400).send('Username or password in use!');
       }
     })
     .catch(err => console.log('some error', err));
