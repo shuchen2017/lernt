@@ -39,7 +39,7 @@ class Courses extends Component {
           {filteredCourses.map(course => (
             <Course
               setActiveCourse={this.props.setActiveCourse}
-              {...course}
+              user={this.props.user}
               course={course}
               key={course.id}
             />
@@ -49,10 +49,6 @@ class Courses extends Component {
     );
   };
 }
-
-Courses.propTypes = {
-  courses: PropTypes.object.isRequired,
-};
 
 const mapStateToProps = state => ({
   courses: state.courses,

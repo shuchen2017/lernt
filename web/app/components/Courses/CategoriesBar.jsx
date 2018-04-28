@@ -34,7 +34,7 @@ class CategoriesBar extends Component {
               </li>
               {categories &&
                 categories.map(category => (
-                  <li className="nav-item active" onClick={() => changeDisplayedCategory(category)}>
+                  <li key={category} className="nav-item active" onClick={() => changeDisplayedCategory(category)}>
                     <a className="nav-link" href="#">
                       {category} <span className="sr-only">(current)</span>
                     </a>
